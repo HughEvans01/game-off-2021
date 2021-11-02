@@ -7,7 +7,7 @@ var config = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 300 },
+            gravity: { y: 600 },
             debug: false
         }
     },
@@ -46,14 +46,24 @@ function create () {
    //platforms.create(50, 250, 'ground');
    //platforms.create(750, 220, 'ground');
 
-   movingPlatform = this.physics.add.image(400, 400, 'ground');
-   movingPlatform.setImmovable(true);
-    movingPlatform.body.allowGravity = false;
+   this.movingPlatforms = this.physics.add.group({
+    //key: 'ground',
+    allowGravity: false,
+    immovable: true,
+  });
+
+   //this.movingPlatforms.create(400,400);
+   this.movingPlatforms.create(400, 400, 'ground');
+   this.movingPlatforms.create(1000, 400, 'ground');
+
+   //movingPlatform = this.physics.add.image(400, 400, 'ground');
+   //movingPlatform.setImmovable(true);
+    //movingPlatform.body.allowGravity = false;
    // movingPlatform.setVelocityX(50);
 
 
     // The player and its settings
-    player = this.physics.add.sprite(100, 450, 'dude');
+    player = this.physics.add.sprite(400, 300, 'dude');
 
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
@@ -85,28 +95,28 @@ function create () {
     cursors = this.input.keyboard.createCursorKeys();
 
     this.physics.add.collider(player,platforms);
-    this.physics.add.collider(player, movingPlatform);
+    this.physics.add.collider(player, this.movingPlatforms);
 }
 
 function update () {
      if (cursors.left.isDown)
     {
-       player.setVelocityX(-160);
-       movingPlatform.setVelocityX(160);
+       //player.setVelocityX(-160);
+       this.movingPlatforms.setVelocityX(300);
 
         player.anims.play('left', true);
     }
     else if (cursors.right.isDown)
     {
-       player.setVelocityX(160);
-        movingPlatform.setVelocityX(-160);
+       //player.setVelocityX(160);
+        this.movingPlatforms.setVelocityX(-300,);
 
         player.anims.play('right', true);
     }
     else
     {
         player.setVelocityX(0);
-        movingPlatform.setVelocityX(0);
+        this.movingPlatforms.setVelocityX(0);
 
         player.anims.play('turn');
     }
