@@ -1,5 +1,3 @@
-console.log("Game started");
-
 var config = {
     type: Phaser.AUTO,
     width: 800,
@@ -33,41 +31,20 @@ function preload () {
 function create () {
     //  A simple background for our game
     this.add.image(400, 300, 'sky');
+    
+    this.movingPlatforms = this.physics.add.group({
+        allowGravity: false,
+        immovable: true,
+    });
 
-    //  The platforms group contains the ground and the 2 ledges we can jump on
-   platforms = this.physics.add.staticGroup();
-
-    //  Here we create the ground.
-    //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-   platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-
-    //  Now let's create some ledges
-   //platforms.create(600, 400, 'ground');
-   //platforms.create(50, 250, 'ground');
-   //platforms.create(750, 220, 'ground');
-
-   this.movingPlatforms = this.physics.add.group({
-    //key: 'ground',
-    allowGravity: false,
-    immovable: true,
-  });
-
-   //this.movingPlatforms.create(400,400);
-   this.movingPlatforms.create(400, 400, 'ground');
-   this.movingPlatforms.create(1000, 400, 'ground');
-
-   //movingPlatform = this.physics.add.image(400, 400, 'ground');
-   //movingPlatform.setImmovable(true);
-    //movingPlatform.body.allowGravity = false;
-   // movingPlatform.setVelocityX(50);
-
+    this.movingPlatforms.create(400, 400, 'ground');
+    this.movingPlatforms.create(1000, 400, 'ground');
 
     // The player and its settings
     player = this.physics.add.sprite(400, 300, 'dude');
 
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
-    player.setCollideWorldBounds(true);
 
     //  Our player animations, turning, walking left and walking right.
     this.anims.create({
@@ -94,36 +71,33 @@ function create () {
     //  Input Events
     cursors = this.input.keyboard.createCursorKeys();
 
-    this.physics.add.collider(player,platforms);
     this.physics.add.collider(player, this.movingPlatforms);
 }
 
 function update () {
-     if (cursors.left.isDown)
-    {
+    // Scroll level / move player left and right
+    if (cursors.left.isDown) {
        //player.setVelocityX(-160);
        this.movingPlatforms.setVelocityX(300);
 
         player.anims.play('left', true);
-    }
-    else if (cursors.right.isDown)
-    {
+    } else if (cursors.right.isDown) {
        //player.setVelocityX(160);
         this.movingPlatforms.setVelocityX(-300,);
 
         player.anims.play('right', true);
-    }
-    else
-    {
+    } else {
         player.setVelocityX(0);
         this.movingPlatforms.setVelocityX(0);
 
         player.anims.play('turn');
     }
-
-    if (cursors.up.isDown && player.body.touching.down)
-    {
+    // Jump
+    if (cursors.up.isDown && player.body.touching.down) {
         player.setVelocityY(-330);
     }
-
+    // Kill player if they fall out of the level
+    if (player.y > 600) {
+        this.scene.restart();
+    }
 }
