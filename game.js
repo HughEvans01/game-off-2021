@@ -37,15 +37,20 @@ function create () {
         allowGravity: false,
         immovable: true,
     });
-    
-    // Starting platforms
-    this.platforms.create(400, 400, 'ground');
-    this.platforms.create(1000, 400, 'ground');
 
     this.pickups = this.physics.add.group({
         allowGravity: false,
         immovable: true,
     });
+
+    this.enemies = this.physics.add.group({
+        allowGravity: false,
+        immovable: true,
+    });
+    
+    // Starting platforms
+    this.platforms.create(400, 400, 'ground');
+    this.platforms.create(1000, 400, 'ground');
 
     // The player and its settings
     player = this.physics.add.sprite(400, 300, 'dude');
@@ -79,9 +84,8 @@ function create () {
     cursors = this.input.keyboard.createCursorKeys();
 
     this.physics.add.collider(player, this.platforms);
-
-    //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
     this.physics.add.overlap(player, this.pickups, collectPickup, null, this);
+    this.physics.add.overlap(player, this.enemies, hitEnemy, null, this);
 }
 
 function update () {
@@ -90,18 +94,21 @@ function update () {
        //player.setVelocityX(-160);
        this.platforms.setVelocityX(300);
        this.pickups.setVelocityX(300);
+       this.enemies.setVelocityX(300);
 
         player.anims.play('left', true);
     } else if (cursors.right.isDown) {
        //player.setVelocityX(160);
         this.platforms.setVelocityX(-300,);
         this.pickups.setVelocityX(-300);
+        this.enemies.setVelocityX(-300);
 
         player.anims.play('right', true);
     } else {
         player.setVelocityX(0);
         this.platforms.setVelocityX(0);
         this.pickups.setVelocityX(0);
+        this.enemies.setVelocityX(0);
 
         player.anims.play('turn');
     }
@@ -119,7 +126,14 @@ function update () {
     // TODO Logic for spawning platforms at intervals is stupid, improve it
     if (latestPlatform.x == 400) {
         latestPlatform = spawnPlatform(this.platforms,latestPlatform);
-        spawnPickup(this.pickups,latestPlatform);
+        switch (Phaser.Math.Between(0, 2)) {
+            case 0:
+                spawnEnemy(this.enemies,latestPlatform);
+                break;
+            case 1:
+                spawnPickup(this.pickups,latestPlatform);
+                break;
+        }
     }
 }
 
@@ -136,16 +150,17 @@ function spawnPlatform(platforms,latestPlatform) {
         value = -50;
     }
     platforms.create(1000, latestPlatform.y + value, 'ground');
-    return  platforms.children.entries[platforms.children.entries.length-1];
+    var totalPlatforms = platforms.children.entries.length;
     // Destroy platforms that are a long way behind the player
     if (totalPlatforms > maxObjects) {
         platforms.children.entries[0].destroy();
     }
+    return  platforms.children.entries[totalPlatforms-1];
 }
 
 function spawnPickup(pickups,platform) {
+    pickups.create(platform.x, platform.y - 50, 'star');
     var totalPickups = pickups.children.entries.length;
-    pickups.create(platform.x, platform.y - 50, 'star'); 
     // Destroy pickups that are a long way behind the player
     if (totalPickups > maxObjects) {
         pickups.children.entries[0].destroy();
@@ -155,4 +170,18 @@ function spawnPickup(pickups,platform) {
 function collectPickup(player, pickup)
 {
     pickup.destroy();
+}
+
+function spawnEnemy(enemies,platform) {
+    enemies.create(platform.x, platform.y - 50, 'bomb'); 
+    var totalEnemies = enemies.children.entries.length;
+    // Destroy enemies that are a long way behind the player
+    if (totalEnemies > maxObjects) {
+    console.log("test");
+      enemies.children.entries[0].destroy();
+    }
+}
+
+function hitEnemy(player,enemy) {
+    this.scene.restart();
 }
