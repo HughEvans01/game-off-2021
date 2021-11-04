@@ -20,10 +20,6 @@ var config = {
     }
 };
 
-var game = new Phaser.Game(config);
-
-
-
 //TODO Define as many game attributes up here as possible
 var player; // Stores reference to player sprite
 var maxObjects = 25; // Maximum number of each type of object
@@ -36,8 +32,12 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
 } else {
     var mobile = false;
 }
-// TODO Find width and height of game and substitute for hard coded values
-// var width = this.cameras.main.centerX, this.cameras.main.centerY
+
+var bugCounter = 0;
+var latestBug = null;
+
+var game = new Phaser.Game(config);
+
 
 function preload () {
     this.load.image('sky', 'assets/sky.png');
@@ -48,9 +48,18 @@ function preload () {
     this.load.image('up', 'assets/up.png');
     this.load.image('right', 'assets/right.png');
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+    this.load.json('bugs', 'bugs.json');
 }
 
 function create () {
+    // Logic for "bugs"
+    this.bugsJSON = this.cache.json.get('bugs');
+    if (latestBug != null) {
+        // Apply effect of bug
+        eval(this.bugsJSON[latestBug].effect);
+        latestBug = null;
+    }
+
     //  A simple background for our game
     this.add.image(400, 300, 'sky');
 
@@ -159,6 +168,7 @@ function update () {
     }
     // Kill player if they fall out of the level
     if (player.y > 600) {
+        clearBugs();
         this.scene.restart();
     }
     // Generate level
@@ -172,7 +182,7 @@ function update () {
                 spawnEnemy(this.enemies,latestPlatform);
                 break;
             case 1:
-                spawnPickup(this.pickups,latestPlatform);
+                spawnPickup(this.pickups,latestPlatform,this.bugsJSON);
                 break;
         }
     }
@@ -197,9 +207,12 @@ function spawnPlatform(platforms,latestPlatform) {
     return  platforms.children.entries[totalPlatforms-1];
 }
 
-function spawnPickup(pickups,platform) {
+function spawnPickup(pickups,platform,bugs) {
     pickups.create(platform.x, platform.y - 50, 'star');
     var totalPickups = pickups.children.entries.length;
+    var pickup = pickups.children.entries[totalPickups-1];
+    pickup.bugID = Phaser.Math.Between(0, bugs.length-1);
+    pickup.setTintFill(bugs[pickup.bugID].colour);
     // Destroy pickups that are a long way behind the player
     if (totalPickups > maxObjects) {
         pickups.children.entries[0].destroy();
@@ -209,6 +222,11 @@ function spawnPickup(pickups,platform) {
 function collectPickup(player, pickup)
 {
     pickup.destroy();
+    // TODO Transition goes here
+    bugCounter++;
+    latestBug = pickup.bugID;
+    this.scene.restart();
+
 }
 
 function spawnEnemy(enemies,platform) {
@@ -221,5 +239,16 @@ function spawnEnemy(enemies,platform) {
 }
 
 function hitEnemy(player,enemy) {
+    clearBugs();
     this.scene.restart();
+}
+
+// Resets all of the game variables to default to clear bug effects
+function clearBugs(){ 
+    speed = 300; 
+    jump = 330; 
+    maxHeight = 200; 
+    minHeight = 450; 
+    bugCounter = 0;
+    latestBug = null;
 }
