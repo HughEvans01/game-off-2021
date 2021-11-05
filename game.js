@@ -187,6 +187,7 @@ function update () {
             case 1:
                 spawnPickup(this.pickups,latestPlatform,this.bugsJSON);
                 break;
+            
         }
     }
 }
@@ -206,6 +207,7 @@ function spawnPlatform(platforms,latestPlatform) {
     // Destroy platforms that are a long way behind the player
     if (totalPlatforms > maxObjects) {
         platforms.children.entries[0].destroy();
+        totalPlatforms = platforms.children.entries.length;
     }
     return  platforms.children.entries[totalPlatforms-1];
 }
