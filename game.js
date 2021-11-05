@@ -3,7 +3,7 @@ var config = {
     width: 800,
     height: 600,
     scale: {
-        mode: Phaser.Scale.WIDTH_CONTROLS_HEIGHT ,
+        mode: Phaser.Scale.HEIGHT_CONTROLS_WIDTH,
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
     physics: {
@@ -116,9 +116,9 @@ function create () {
     // Touch screen controls
     if (mobile) {
         this.input.addPointer(2); // For multi-touch
-        const leftButton = this.add.image(48, 549-95, 'left');
-        const upButton = this.add.image(139, 549-95, 'up');
-        const rightButton = this.add.image(230, 549-95, 'right');
+        const leftButton = this.add.image(48, 549, 'left');
+        const upButton = this.add.image(400, 549, 'up');
+        const rightButton = this.add.image(752, 549, 'right');
         leftButton.setInteractive();
         upButton.setInteractive();
         rightButton.setInteractive();
@@ -169,6 +169,9 @@ function update () {
     // Kill player if they fall out of the level
     if (player.y > 600) {
         clearBugs();
+        this.right_held = false;
+        this.left_held = false;
+        this.jump_pressed = false;
         this.scene.restart();
     }
     // Generate level
@@ -240,6 +243,9 @@ function spawnEnemy(enemies,platform) {
 
 function hitEnemy(player,enemy) {
     clearBugs();
+    this.right_held = false;
+    this.left_held = false;
+    this.jump_pressed = false;
     this.scene.restart();
 }
 
