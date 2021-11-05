@@ -177,17 +177,14 @@ function update () {
     // Generate level
     var totalPlatforms = this.platforms.children.entries.length;
     var latestPlatform = this.platforms.children.entries[totalPlatforms-1];
-    // TODO Logic for spawning platforms at intervals is stupid, improve it
+    // TODO Logic for spawning platforms and entities is stupid, improve it
     if (latestPlatform.x <= 400) {
         latestPlatform = spawnPlatform(this.platforms,latestPlatform);
-        switch (Phaser.Math.Between(0, 2)) {
-            case 0:
-                spawnEnemy(this.enemies,latestPlatform);
-                break;
-            case 1:
-                spawnPickup(this.pickups,latestPlatform,this.bugsJSON);
-                break;
-            
+        var entity = Phaser.Math.Between(0, 9);
+        if (entity < 4) {
+            spawnEnemy(this.enemies,latestPlatform);
+        } else if (entity == 9){
+            spawnPickup(this.pickups,latestPlatform,this.bugsJSON);
         }
     }
 }
