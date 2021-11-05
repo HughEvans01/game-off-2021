@@ -34,7 +34,6 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
 }
 
 var bugCounter = 0;
-var latestBug = null;
 
 var game = new Phaser.Game(config);
 
@@ -52,13 +51,8 @@ function preload () {
 }
 
 function create () {
-    // Logic for "bugs"
+    // Get bugs
     this.bugsJSON = this.cache.json.get('bugs');
-    if (latestBug != null) {
-        // Apply effect of bug
-        eval(this.bugsJSON[latestBug].effect);
-        latestBug = null;
-    }
 
     //  A simple background for our game
     this.add.image(400, 300, 'sky');
@@ -226,8 +220,9 @@ function collectPickup(player, pickup)
     pickup.destroy();
     // TODO Transition goes here
     bugCounter++;
-    latestBug = pickup.bugID;
-    this.scene.restart();
+    // Apply effect of bug
+    eval(this.bugsJSON[pickup.bugID].effect);
+
 
 }
 
@@ -255,5 +250,4 @@ function clearBugs(){
     maxHeight = 200; 
     minHeight = 450; 
     bugCounter = 0;
-    latestBug = null;
 }
