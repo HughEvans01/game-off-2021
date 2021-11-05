@@ -193,14 +193,13 @@ function spawnPlatform(platforms,latestPlatform) {
     } else if (latestPlatform.y >= minHeight) {
         value = -50;
     }
-    platforms.create(1000, latestPlatform.y + value, 'ground');
+    var newPlatform = platforms.create(1000, latestPlatform.y + value, 'ground');
     var totalPlatforms = platforms.children.entries.length;
     // Destroy platforms that are a long way behind the player
     if (totalPlatforms > maxObjects) {
         platforms.children.entries[0].destroy();
-        totalPlatforms = platforms.children.entries.length;
     }
-    return  platforms.children.entries[totalPlatforms-1];
+    return newPlatform;
 }
 
 function spawnPickup(pickups,platform,bugs) {
