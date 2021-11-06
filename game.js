@@ -169,6 +169,10 @@ function update () {
         this.left_held = false;
         this.jump_pressed = false;
         distanceTravelled = 0;
+        player.setVelocityX(0);
+        this.platforms.setVelocityX(0);
+        this.pickups.setVelocityX(0);
+        this.enemies.setVelocityX(0);
         this.scene.restart();
     }
     // Generate level
@@ -243,6 +247,10 @@ function hitEnemy(player,enemy) {
     this.right_held = false;
     this.left_held = false;
     this.jump_pressed = false;
+    player.setVelocityX(0);
+    this.platforms.setVelocityX(0);
+    this.pickups.setVelocityX(0);
+    this.enemies.setVelocityX(0);
     distanceTravelled = 0;
     this.scene.restart();
 }
