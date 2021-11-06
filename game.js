@@ -55,6 +55,7 @@ class Game extends Phaser.Scene {
         // Distance travelled measured from this sprite
         this.marker = this.physics.add.sprite(400, 400, '');
         this.marker.body.allowGravity = false;
+        this.marker.visible = false;
 
         // Spawn the player
         this.player = {
@@ -112,7 +113,11 @@ class Game extends Phaser.Scene {
 
     update(time, delta) {
         this.player.distanceTraveled = this.player.sprite.x - this.marker.x;
-        this.distanceTraveled.setText(this.player.distanceTraveled);
+        if (this.player.distanceTraveled > 0) {
+            this.distanceTraveled.setText(Math.round(this.player.distanceTraveled/100));
+        } else {
+            this.distanceTraveled.setText("0");
+        }
         // Scroll level / move player left and right
         if (this.cursors.left.isDown || this.left_held) {
            this.platforms.setVelocityX(this.player.speed);
