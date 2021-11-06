@@ -23,10 +23,12 @@ var config = {
 //TODO Define as many game attributes up here as possible
 var player; // Stores reference to player sprite
 var maxObjects = 25; // Maximum number of each type of object
+var distanceTravelled = 0; // Score
 var speed = 300; // Player speed
 var jump = 330; // Jump velocity
 var maxHeight = 200; // Max height for platforms to spawn
 var minHeight = 450; // Min height for platforms to spawn
+var playerBounce = 0.2; // How much the player bounces on impact
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
     var mobile = true;
 } else {
@@ -80,7 +82,7 @@ function create () {
     player = this.physics.add.sprite(400, 300, 'dude');
 
     //  Player physics properties. Give the little guy a slight bounce.
-    player.setBounce(0.2);
+    player.setBounce(playerBounce);
 
     //  Our player animations, turning, walking left and walking right.
     this.anims.create({
@@ -166,6 +168,7 @@ function update () {
         this.right_held = false;
         this.left_held = false;
         this.jump_pressed = false;
+        distanceTravelled = 0;
         this.scene.restart();
     }
     // Generate level
@@ -221,6 +224,7 @@ function collectPickup(player, pickup)
     bugCounter++;
     // Apply effect of bug
     eval(this.bugsJSON[pickup.bugID].effect);
+    player.setBounce(playerBounce);
 
 
 }
@@ -239,6 +243,7 @@ function hitEnemy(player,enemy) {
     this.right_held = false;
     this.left_held = false;
     this.jump_pressed = false;
+    distanceTravelled = 0;
     this.scene.restart();
 }
 
@@ -249,4 +254,5 @@ function clearBugs(){
     maxHeight = 200; 
     minHeight = 450; 
     bugCounter = 0;
+    playerBounce = 0.2;
 }
