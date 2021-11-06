@@ -161,7 +161,8 @@ class Game extends Phaser.Scene {
         this.platforms.setVelocityX(0);
         this.pickups.setVelocityX(0);
         this.enemies.setVelocityX(0);
-        this.scene.restart();
+        this.scene.pause("Game");
+        this.scene.start("Transition");
     }
 
     spawnPlatform() {
