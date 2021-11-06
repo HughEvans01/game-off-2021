@@ -5,13 +5,11 @@ class Transition extends Phaser.Scene {
     }
 
     init() {
-        console.log("test");
+    
     }
 
     preload() {
-        // Used for preloading assets into your scene, such as
-        // • images
-        // • sounds
+
     }
 
     create(data) {
@@ -29,6 +27,6 @@ class Transition extends Phaser.Scene {
     }
 
     update(time, delta) {
-        // Used to update your game. This function runs constantly
+
     }
 }

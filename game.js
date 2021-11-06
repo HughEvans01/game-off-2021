@@ -50,6 +50,12 @@ class Game extends Phaser.Scene {
         this.platforms.create(400, 400, 'ground');
         this.platforms.create(1000, 400, 'ground');
 
+        // Display distance travelled
+        this.distanceTraveled = this.add.text(10, 0, '0', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif', fontSize: '32px' });
+        // Distance travelled measured from this sprite
+        this.marker = this.physics.add.sprite(400, 400, '');
+        this.marker.body.allowGravity = false;
+
         // Spawn the player
         this.player = {
             sprite: null,
@@ -105,17 +111,21 @@ class Game extends Phaser.Scene {
     }   
 
     update(time, delta) {
+        this.player.distanceTraveled = this.player.sprite.x - this.marker.x;
+        this.distanceTraveled.setText(this.player.distanceTraveled);
         // Scroll level / move player left and right
         if (this.cursors.left.isDown || this.left_held) {
            this.platforms.setVelocityX(this.player.speed);
            this.pickups.setVelocityX(this.player.speed);
            this.enemies.setVelocityX(this.player.speed);
+           this.marker.setVelocityX(this.player.speed);
 
             this.player.sprite.anims.play('left', true);
         } else if (this.cursors.right.isDown || this.right_held) {
             this.platforms.setVelocityX(-this.player.speed,);
             this.pickups.setVelocityX(-this.player.speed);
             this.enemies.setVelocityX(-this.player.speed);
+            this.marker.setVelocityX(-this.player.speed);
 
             this.player.sprite.anims.play('right', true);
         } else {
@@ -123,6 +133,7 @@ class Game extends Phaser.Scene {
             this.platforms.setVelocityX(0);
             this.pickups.setVelocityX(0);
             this.enemies.setVelocityX(0);
+            this.marker.setVelocityX(0);
 
             this.left_pressed = false;
             this.right_pressed = false;
