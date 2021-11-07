@@ -61,7 +61,7 @@ class Game extends Phaser.Scene {
             sprite: null,
             speed: 300,
             jump: 330,
-            bounce: 0.2,
+            bounce: 0,
             distanceTraveled: 0, // TODO Implement this
             bugsCollected: 0
         };
@@ -130,19 +130,15 @@ class Game extends Phaser.Scene {
         }
         // Scroll level / move player left and right
         if (this.cursors.left.isDown || this.left_held) {
-           this.player.sprite.setVelocityX(-this.player.speed);
-
+            this.player.sprite.setVelocityX(-this.player.speed);
             this.player.sprite.anims.play('left', true);
         } else if (this.cursors.right.isDown || this.right_held) {
             this.player.sprite.setVelocityX(this.player.speed,);
-
             this.player.sprite.anims.play('right', true);
         } else {
             this.player.sprite.setVelocityX(0);
-
             this.left_pressed = false;
             this.right_pressed = false;
-
             this.player.sprite.anims.play('turn');
         }
         // Jump
@@ -190,6 +186,7 @@ class Game extends Phaser.Scene {
         } else if (this.latestPlatform.y >= this.gameData.minPlatformHeight) {
             offset = -50;
         }
+        // TODO This line is very, very stupid. Replace it with something better
         this.platforms.create(this.latestPlatform.x + 600, this.latestPlatform.y + offset, 'ground');
         // Destroy platforms that are a long way behind the player
         if (this.totalPlatforms > this.gameData.maxObjects) {
@@ -209,9 +206,8 @@ class Game extends Phaser.Scene {
     }
 
     spawnPickup() {
-        this.pickups.create(this.latestPlatform.x, this.latestPlatform.y - 50, 'star');
+        this.pickup = this.pickups.create(this.latestPlatform.x, this.latestPlatform.y - 50, 'star');
         this.totalPickups = this.pickups.children.entries.length;
-        this.pickup = this.pickups.children.entries[this.totalPickups-1];
         this.pickup.bugID = Phaser.Math.Between(0, this.bugsJSON.length-1);
         this.pickup.setTintFill(this.bugsJSON[this.pickup.bugID].colour);
         // Destroy pickups that are a long way behind the player
