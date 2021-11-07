@@ -65,7 +65,7 @@ class Game extends Phaser.Scene {
             distanceTraveled: 0, // TODO Implement this
             bugsCollected: 0
         };
-        this.player.sprite = this.physics.add.sprite(400, 300, 'dude');
+        this.player.sprite = this.physics.add.sprite(400, 360, 'dude');
         this.player.sprite.setBounce(this.player.bounce);
 
         this.anims.create({
