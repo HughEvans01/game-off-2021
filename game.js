@@ -11,6 +11,7 @@ class Game extends Phaser.Scene {
             minPlatformHeight: 450,
             maxPlatformHeight: 200,
             mobile: false,
+            UIScale: 1.1,
         };
         this.gameData.mobile = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
     }
@@ -93,9 +94,13 @@ class Game extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys();
         if (this.gameData.mobile) {
             this.input.addPointer(2); // For multi-touch
-            const leftButton = this.add.image(48, 549, 'left');
-            const upButton = this.add.image(400, 549, 'up');
-            const rightButton = this.add.image(752, 549, 'right');
+            const leftButton = this.add.image(48*this.gameData.UIScale, 600 - 49*this.gameData.UIScale, 'left');
+            const upButton = this.add.image(400, 600 - 49*this.gameData.UIScale, 'up');
+            const rightButton = this.add.image(800 - 48*this.gameData.UIScale, 600 - 49*this.gameData.UIScale, 'right');
+            console.log(this.gameData.UIScale);
+            leftButton.setScale(this.gameData.UIScale);
+            upButton.setScale(this.gameData.UIScale);
+            rightButton.setScale(this.gameData.UIScale);
             leftButton.setInteractive();
             upButton.setInteractive();
             rightButton.setInteractive();
