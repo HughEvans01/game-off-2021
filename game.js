@@ -8,7 +8,7 @@ class Game extends Phaser.Scene {
         // Used to prepare data
         this.gameData = {
             maxObjects: 25,
-            minPlatformHeight: 450,
+            minPlatformHeight: 400,
             maxPlatformHeight: 200,
             mobile: false,
             UIScale: 1.1,
