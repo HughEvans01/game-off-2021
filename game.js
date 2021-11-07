@@ -48,13 +48,13 @@ class Game extends Phaser.Scene {
 
         // Setup start of level
         this.background = this.add.image(400, 300, 'sky');
-        this.background.setScrollFactor(0)
+        this.background.setScrollFactor(0);
         this.platforms.create(400, 400, 'ground');
         this.platforms.create(1000, 400, 'ground');
 
         // Display distance travelled
         this.distanceTraveled = this.add.text(10, 0, '0', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif', fontSize: '32px' });
-        this.distanceTraveled.setScrollFactor(0)
+        this.distanceTraveled.setScrollFactor(0);
 
         // Spawn the player
         this.player = {
@@ -95,6 +95,9 @@ class Game extends Phaser.Scene {
             const leftButton = this.add.image(48*this.gameData.UIScale, 600 - 49*this.gameData.UIScale, 'left');
             const upButton = this.add.image(400, 600 - 49*this.gameData.UIScale, 'up');
             const rightButton = this.add.image(800 - 48*this.gameData.UIScale, 600 - 49*this.gameData.UIScale, 'right');
+            leftButton.setScrollFactor(0);
+            upButton.setScrollFactor(0);
+            rightButton.setScrollFactor(0);
             leftButton.setScale(this.gameData.UIScale);
             upButton.setScale(this.gameData.UIScale);
             rightButton.setScale(this.gameData.UIScale);
