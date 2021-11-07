@@ -47,16 +47,14 @@ class Game extends Phaser.Scene {
         });
 
         // Setup start of level
-        this.add.image(400, 300, 'sky');
+        this.background = this.add.image(400, 300, 'sky');
+        this.background.setScrollFactor(0)
         this.platforms.create(400, 400, 'ground');
         this.platforms.create(1000, 400, 'ground');
 
         // Display distance travelled
         this.distanceTraveled = this.add.text(10, 0, '0', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif', fontSize: '32px' });
-        // Distance travelled measured from this sprite
-        this.marker = this.physics.add.sprite(400, 400, '');
-        this.marker.body.allowGravity = false;
-        this.marker.visible = false;
+        this.distanceTraveled.setScrollFactor(0)
 
         // Spawn the player
         this.player = {
@@ -97,7 +95,6 @@ class Game extends Phaser.Scene {
             const leftButton = this.add.image(48*this.gameData.UIScale, 600 - 49*this.gameData.UIScale, 'left');
             const upButton = this.add.image(400, 600 - 49*this.gameData.UIScale, 'up');
             const rightButton = this.add.image(800 - 48*this.gameData.UIScale, 600 - 49*this.gameData.UIScale, 'right');
-            console.log(this.gameData.UIScale);
             leftButton.setScale(this.gameData.UIScale);
             upButton.setScale(this.gameData.UIScale);
             rightButton.setScale(this.gameData.UIScale);
@@ -114,10 +111,15 @@ class Game extends Phaser.Scene {
         this.physics.add.collider(this.player.sprite, this.platforms);
         this.physics.add.overlap(this.player.sprite, this.pickups, this.collectPickup, null, this);
         this.physics.add.overlap(this.player.sprite, this.enemies, this.killPlayer, null, this);
+
+
     }   
 
     update(time, delta) {
-        this.player.distanceTraveled = this.player.sprite.x - this.marker.x;
+        // Track player with camera
+        this.cameras.main.centerOn(this.player.sprite.x, this.player.sprite.y);
+        // Update distance travelled
+        this.player.distanceTraveled = this.player.sprite.x - 400;
         if (this.player.distanceTraveled > 0) {
             this.distanceTraveled.setText(Math.round(this.player.distanceTraveled/100));
         } else {
@@ -125,25 +127,15 @@ class Game extends Phaser.Scene {
         }
         // Scroll level / move player left and right
         if (this.cursors.left.isDown || this.left_held) {
-           this.platforms.setVelocityX(this.player.speed);
-           this.pickups.setVelocityX(this.player.speed);
-           this.enemies.setVelocityX(this.player.speed);
-           this.marker.setVelocityX(this.player.speed);
+           this.player.sprite.setVelocityX(-this.player.speed);
 
             this.player.sprite.anims.play('left', true);
         } else if (this.cursors.right.isDown || this.right_held) {
-            this.platforms.setVelocityX(-this.player.speed,);
-            this.pickups.setVelocityX(-this.player.speed);
-            this.enemies.setVelocityX(-this.player.speed);
-            this.marker.setVelocityX(-this.player.speed);
+            this.player.sprite.setVelocityX(this.player.speed,);
 
             this.player.sprite.anims.play('right', true);
         } else {
             this.player.sprite.setVelocityX(0);
-            this.platforms.setVelocityX(0);
-            this.pickups.setVelocityX(0);
-            this.enemies.setVelocityX(0);
-            this.marker.setVelocityX(0);
 
             this.left_pressed = false;
             this.right_pressed = false;
@@ -163,7 +155,9 @@ class Game extends Phaser.Scene {
         this.totalPlatforms = this.platforms.children.entries.length;
         this.latestPlatform = this.platforms.children.entries[this.totalPlatforms-1];
         // TODO Logic for spawning platforms and entities is stupid, improve it
-        if (this.latestPlatform.x <= 400) {
+        var a = this.latestPlatform.x;
+        var b = this.player.sprite.x;
+        if ((a - b) < 200) {
             this.spawnPlatform();
             var entity = Phaser.Math.Between(0, 9);
             if (entity < 4) {
@@ -179,9 +173,6 @@ class Game extends Phaser.Scene {
         this.left_held = false;
         this.jump_pressed = false;
         this.player.sprite.setVelocityX(0);
-        this.platforms.setVelocityX(0);
-        this.pickups.setVelocityX(0);
-        this.enemies.setVelocityX(0);
         this.scene.pause("Game");
         this.scene.start("Transition");
     }
@@ -196,7 +187,7 @@ class Game extends Phaser.Scene {
         } else if (this.latestPlatform.y >= this.gameData.minPlatformHeight) {
             offset = -50;
         }
-        this.platforms.create(1000, this.latestPlatform.y + offset, 'ground');
+        this.platforms.create(this.latestPlatform.x + 600, this.latestPlatform.y + offset, 'ground');
         // Destroy platforms that are a long way behind the player
         if (this.totalPlatforms > this.gameData.maxObjects) {
            this.platforms.children.entries[0].destroy();
