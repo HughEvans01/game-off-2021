@@ -67,7 +67,6 @@ class Game extends Phaser.Scene {
         };
         this.player.sprite = this.physics.add.sprite(400, 360, 'dude');
         this.player.sprite.setBounce(this.player.bounce);
-
         this.anims.create({
             key: 'left',
             frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
@@ -92,8 +91,8 @@ class Game extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys();
         if (this.gameData.mobile) {
             this.input.addPointer(2); // For multi-touch
-            const leftButton = this.add.image(48*this.gameData.UIScale, 600 - 49*this.gameData.UIScale, 'left');
-            const upButton = this.add.image(400, 600 - 49*this.gameData.UIScale, 'up');
+            const leftButton = this.add.image(800 - (144*this.gameData.UIScale), 600 - 49*this.gameData.UIScale, 'left');
+            const upButton = this.add.image(48*this.gameData.UIScale, 600 - 49*this.gameData.UIScale, 'up');
             const rightButton = this.add.image(800 - 48*this.gameData.UIScale, 600 - 49*this.gameData.UIScale, 'right');
             leftButton.setScrollFactor(0);
             upButton.setScrollFactor(0);
