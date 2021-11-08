@@ -91,23 +91,23 @@ class Game extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys();
         if (this.gameData.mobile) {
             this.input.addPointer(2); // For multi-touch
-            const leftButton = this.add.image(800 - (144*this.gameData.UIScale), 600 - 49*this.gameData.UIScale, 'left');
-            const upButton = this.add.image(48*this.gameData.UIScale, 600 - 49*this.gameData.UIScale, 'up');
-            const rightButton = this.add.image(800 - 48*this.gameData.UIScale, 600 - 49*this.gameData.UIScale, 'right');
-            leftButton.setScrollFactor(0);
-            upButton.setScrollFactor(0);
-            rightButton.setScrollFactor(0);
-            leftButton.setScale(this.gameData.UIScale);
-            upButton.setScale(this.gameData.UIScale);
-            rightButton.setScale(this.gameData.UIScale);
-            leftButton.setInteractive();
-            upButton.setInteractive();
-            rightButton.setInteractive();
-            leftButton.on('pointerdown', () => { this.left_held = true; });
-            leftButton.on('pointerup', () => { this.left_held = false; });
-            upButton.on('pointerdown', () => { this.jump_pressed = true; });
-            rightButton.on('pointerdown', () => { this.right_held = true; });
-            rightButton.on('pointerup', () => { this.right_held = false; });
+            this.leftButton = this.add.image(800 - (144*this.gameData.UIScale), 600 - 49*this.gameData.UIScale, 'left');
+            this.upButton = this.add.image(48*this.gameData.UIScale, 600 - 49*this.gameData.UIScale, 'up');
+            this.rightButton = this.add.image(800 - 48*this.gameData.UIScale, 600 - 49*this.gameData.UIScale, 'right');
+            this.leftButton.setScrollFactor(0);
+            this.upButton.setScrollFactor(0);
+            this.rightButton.setScrollFactor(0);
+            this.leftButton.setScale(this.gameData.UIScale);
+            this.upButton.setScale(this.gameData.UIScale);
+            this.rightButton.setScale(this.gameData.UIScale);
+            this.leftButton.setInteractive();
+            this.upButton.setInteractive();
+            this.rightButton.setInteractive();
+            this.leftButton.on('pointerdown', () => { this.left_held = true; });
+            this.leftButton.on('pointerup', () => { this.left_held = false; });
+            this.upButton.on('pointerdown', () => { this.jump_pressed = true; });
+            this.rightButton.on('pointerdown', () => { this.right_held = true; });
+            this.rightButton.on('pointerup', () => { this.right_held = false; });
         }
 
         this.physics.add.collider(this.player.sprite, this.platforms);
@@ -118,6 +118,13 @@ class Game extends Phaser.Scene {
     }   
 
     update(time, delta) {
+        // TODO The below feels dumb, improve it?
+        // Keep touch screen controls on top
+        if (this.gameData.mobile) {
+            this.children.bringToTop(this.leftButton);
+            this.children.bringToTop(this.upButton);
+            this.children.bringToTop(this.rightButton);
+        }
         // Track player with camera
         this.cameras.main.centerOn(this.player.sprite.x, this.player.sprite.y);
         // Update distance travelled
