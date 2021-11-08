@@ -203,16 +203,25 @@ class Game extends Phaser.Scene {
     }
 
     spawnEnemy() {
-        this.enemies.create(this.latestPlatform.x, this.latestPlatform.y - 50, 'bomb'); 
+        this.latestEnemy = this.enemies.create(this.latestPlatform.x, this.latestPlatform.y - 50, 'bomb'); 
         this.totalEnemies = this.enemies.children.entries.length;
         // Destroy enemies that are a long way behind the player
         if (this.totalEnemies > this.gameData.maxObjects) {
             this.enemies.children.entries[0].destroy();
         }
+        this.tweens.add({
+            targets: this.latestEnemy,
+            y: this.latestPlatform.y - 200,
+            duration: 2000,
+            ease: 'Sine.easeInOut',
+            repeat: -1,
+            yoyo: true
+        });
     }
 
     spawnPickup() {
-        this.pickup = this.pickups.create(this.latestPlatform.x, this.latestPlatform.y - 50, 'star');
+        var offset = this.latestPlatform.width/2;
+        this.pickup = this.pickups.create(this.latestPlatform.x + offset, this.latestPlatform.y - 50, 'star');
         this.totalPickups = this.pickups.children.entries.length;
         this.pickup.bugID = Phaser.Math.Between(0, this.bugsJSON.length-1);
         this.pickup.setTintFill(this.bugsJSON[this.pickup.bugID].colour);
@@ -220,6 +229,14 @@ class Game extends Phaser.Scene {
         if (this.totalPickups > this.gameData.maxObjects) {
             this.pickups.children.entries[0].destroy();
         }
+        this.tweens.add({
+            targets: this.pickup,
+            x: this.latestPlatform.x - offset,
+            duration: 2000,
+            ease: 'Sine.easeInOut',
+            repeat: -1,
+            yoyo: true
+        });
     }
 
     collectPickup(player, pickup) {
