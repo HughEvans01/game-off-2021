@@ -162,7 +162,8 @@ class Game extends Phaser.Scene {
         // TODO Logic for spawning platforms and entities is stupid, improve it
         var a = this.latestPlatform.x;
         var b = this.player.sprite.x;
-        if ((a - b) < 200) {
+        if ((a - b) < 2000) {
+            console.log(a-b);
             this.spawnPlatform();
             var entity = Phaser.Math.Between(0, 9);
             if (entity < 4) {
