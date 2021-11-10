@@ -5,6 +5,7 @@ class Game extends Phaser.Scene {
     }
 
     init() {
+        this.graphics;
         // Used to prepare data
         this.gameData = {
             maxObjects: 25,
@@ -12,6 +13,7 @@ class Game extends Phaser.Scene {
             maxPlatformHeight: 200,
             mobile: false,
             UIScale: 1.1,
+            menuOpen: false,
         };
         this.gameData.mobile = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
     }
@@ -24,6 +26,7 @@ class Game extends Phaser.Scene {
         this.load.image('left', 'assets/left.png');
         this.load.image('up', 'assets/up.png');
         this.load.image('right', 'assets/right.png');
+        this.load.image('pause', 'assets/pause.png');
         this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
         this.load.json('bugs', 'bugs.json');
     }
@@ -109,6 +112,11 @@ class Game extends Phaser.Scene {
             this.rightButton.on('pointerdown', () => { this.right_held = true; });
             this.rightButton.on('pointerup', () => { this.right_held = false; });
         }
+        this.pause = this.add.image(800-(37*this.gameData.UIScale), 37*this.gameData.UIScale, 'pause');
+        this.pause.setScrollFactor(0);
+        this.pause.setScale(this.gameData.UIScale);
+        this.pause.setInteractive();
+        this.pause.on('pointerdown', () => { this.toggleMenu(); });
 
         this.physics.add.collider(this.player.sprite, this.platforms);
         this.physics.add.overlap(this.player.sprite, this.pickups, this.collectPickup, null, this);
@@ -126,15 +134,17 @@ class Game extends Phaser.Scene {
             this.children.bringToTop(this.rightButton);
         }
         // Track player with camera
-        this.cameras.main.centerOn(this.player.sprite.x, this.player.sprite.y);
+        if (this.player.sprite.y < 600) {
+            this.cameras.main.centerOn(this.player.sprite.x, this.player.sprite.y);
+        }
         // Update distance travelled
-        this.player.distanceTraveled = this.player.sprite.x - 400;
+        this.player.distanceTraveled = Math.round((this.player.sprite.x - 400)/100);
         if (this.player.distanceTraveled > 0) {
-            this.distanceTraveled.setText(Math.round(this.player.distanceTraveled/100));
+            this.distanceTraveled.setText(this.player.distanceTraveled);
         } else {
             this.distanceTraveled.setText("0");
         }
-        // Scroll level / move player left and right
+        // Move player left and right
         if (this.cursors.left.isDown || this.left_held) {
             this.player.sprite.setVelocityX(-this.player.speed);
             this.player.sprite.anims.play('left', true);
@@ -156,6 +166,7 @@ class Game extends Phaser.Scene {
         if (this.player.sprite.y > 600) {
             this.killPlayer();
         }
+
         // Generate level
         this.totalPlatforms = this.platforms.children.entries.length;
         this.latestPlatform = this.platforms.children.entries[this.totalPlatforms-1];
@@ -163,7 +174,6 @@ class Game extends Phaser.Scene {
         var a = this.latestPlatform.x;
         var b = this.player.sprite.x;
         if ((a - b) < 2000) {
-            console.log(a-b);
             this.spawnPlatform();
             var entity = Phaser.Math.Between(0, 9);
             if (entity < 4) {
@@ -178,9 +188,49 @@ class Game extends Phaser.Scene {
         this.right_held = false;
         this.left_held = false;
         this.jump_pressed = false;
-        this.player.sprite.setVelocityX(0);
-        this.scene.pause("Game");
-        this.scene.start("Transition");
+        if (this.gameData.menuOpen == false) {
+            if (this.gameData.mobile) {
+                this.leftButton.destroy();
+                this.rightButton.destroy();
+                this.upButton.destroy();
+            }
+            this.pause.destroy();
+            this.toggleMenu();
+        }
+    }
+
+    toggleMenu() {
+        if (!this.gameData.menuOpen) {
+            this.graphics = this.add.graphics();
+            this.graphics.fillStyle(0x000000, 1);
+            this.graphics.fillRoundedRect(this.player.sprite.x-200, this.player.sprite.y-150, 400, 300, 32);
+            this.score = this.add.text(this.player.sprite.x,  this.player.sprite.y-50, this.player.distanceTraveled, { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif', fontSize: '32px' });
+            this.score.setOrigin(0.5,0.5);
+            this.playAgain = this.add.text(this.player.sprite.x, this.player.sprite.y, 'PLAY AGAIN', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif', fontSize: '32px' });
+            this.playAgain.setOrigin(0.5,0.5);
+            this.playAgain.setInteractive();
+            this.playAgain.on('pointerdown', () => {
+                console.log("restart");
+                this.scene.restart();
+            });
+            this.playAgain.on('pointerdown', () => {
+                this.scene.pause("Menu");
+            });
+            this.backToMenu = this.add.text(this.player.sprite.x, this.player.sprite.y+50, 'BACK TO MENU', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif', fontSize: '32px' });
+            this.backToMenu.setOrigin(0.5,0.5);
+            this.backToMenu.setInteractive();
+            this.backToMenu.on('pointerdown', () => {
+                console.log("menu");
+                this.scene.start("Menu");
+            });
+            this.gameData.menuOpen = true;
+        } else {
+            this.graphics.destroy();
+            this.score.destroy();
+            this.playAgain.destroy();
+            this.backToMenu.destroy();
+            this.gameData.menuOpen = false;
+        }
     }
 
     spawnPlatform() {
