@@ -26,7 +26,8 @@ class Menu extends Phaser.Scene {
         collection.setOrigin(0.5,0.5);
         collection.setInteractive();
         collection.on('pointerdown', () => {
-            // TODO Open collection goes here
+            this.scene.pause("Menu");
+            this.scene.start("BugCollection");
         });
         var options = this.add.text(screenCenterX, 400, 'OPTIONS', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif', fontSize: '32px' });
         options.setOrigin(0.5,0.5);

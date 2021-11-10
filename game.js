@@ -65,8 +65,9 @@ class Game extends Phaser.Scene {
             speed: 300,
             jump: 330,
             bounce: 0,
-            distanceTraveled: 0, // TODO Implement this
-            bugsCollected: 0
+            distanceTraveled: 0,
+            bugsCollected: [],
+            alive: true
         };
         this.player.sprite = this.physics.add.sprite(400, 360, 'dude');
         this.player.sprite.setBounce(this.player.bounce);
@@ -133,40 +134,41 @@ class Game extends Phaser.Scene {
             this.children.bringToTop(this.upButton);
             this.children.bringToTop(this.rightButton);
         }
-        // Track player with camera
-        if (this.player.sprite.y < 600) {
-            this.cameras.main.centerOn(this.player.sprite.x, this.player.sprite.y);
+        if (this.player.alive) {
+            // Track player with camera
+            if (this.player.sprite.y < 600) {
+                this.cameras.main.centerOn(this.player.sprite.x, this.player.sprite.y);
+            }
+            // Update distance travelled
+            this.player.distanceTraveled = Math.round((this.player.sprite.x - 400)/100);
+            if (this.player.distanceTraveled > 0) {
+                this.distanceTraveled.setText(this.player.distanceTraveled);
+            } else {
+                this.distanceTraveled.setText("0");
+            }
+            // Move player left and right
+            if (this.cursors.left.isDown || this.left_held) {
+                this.player.sprite.setVelocityX(-this.player.speed);
+                this.player.sprite.anims.play('left', true);
+            } else if (this.cursors.right.isDown || this.right_held) {
+                this.player.sprite.setVelocityX(this.player.speed,);
+                this.player.sprite.anims.play('right', true);
+            } else {
+                this.player.sprite.setVelocityX(0);
+                this.left_pressed = false;
+                this.right_pressed = false;
+                this.player.sprite.anims.play('turn');
+            }
+            // Jump
+            if ((this.cursors.up.isDown || this.jump_pressed) && this.player.sprite.body.touching.down) {
+                this.player.sprite.setVelocityY(-this.player.jump);
+                this.jump_pressed = false;
+            }
+            // Kill player if they fall out of the level
+            if (this.player.sprite.y > 600) {
+                this.killPlayer();
+            }
         }
-        // Update distance travelled
-        this.player.distanceTraveled = Math.round((this.player.sprite.x - 400)/100);
-        if (this.player.distanceTraveled > 0) {
-            this.distanceTraveled.setText(this.player.distanceTraveled);
-        } else {
-            this.distanceTraveled.setText("0");
-        }
-        // Move player left and right
-        if (this.cursors.left.isDown || this.left_held) {
-            this.player.sprite.setVelocityX(-this.player.speed);
-            this.player.sprite.anims.play('left', true);
-        } else if (this.cursors.right.isDown || this.right_held) {
-            this.player.sprite.setVelocityX(this.player.speed,);
-            this.player.sprite.anims.play('right', true);
-        } else {
-            this.player.sprite.setVelocityX(0);
-            this.left_pressed = false;
-            this.right_pressed = false;
-            this.player.sprite.anims.play('turn');
-        }
-        // Jump
-        if ((this.cursors.up.isDown || this.jump_pressed) && this.player.sprite.body.touching.down) {
-            this.player.sprite.setVelocityY(-this.player.jump);
-            this.jump_pressed = false;
-        }
-        // Kill player if they fall out of the level
-        if (this.player.sprite.y > 600) {
-            this.killPlayer();
-        }
-
         // Generate level
         this.totalPlatforms = this.platforms.children.entries.length;
         this.latestPlatform = this.platforms.children.entries[this.totalPlatforms-1];
@@ -188,6 +190,8 @@ class Game extends Phaser.Scene {
         this.right_held = false;
         this.left_held = false;
         this.jump_pressed = false;
+        this.player.sprite.setActive(false).setVisible(false);
+        this.player.alive = false;
         if (this.gameData.menuOpen == false) {
             if (this.gameData.mobile) {
                 this.leftButton.destroy();
@@ -210,7 +214,6 @@ class Game extends Phaser.Scene {
             this.playAgain.setOrigin(0.5,0.5);
             this.playAgain.setInteractive();
             this.playAgain.on('pointerdown', () => {
-                console.log("restart");
                 this.scene.restart();
             });
             this.playAgain.on('pointerdown', () => {
@@ -220,7 +223,6 @@ class Game extends Phaser.Scene {
             this.backToMenu.setOrigin(0.5,0.5);
             this.backToMenu.setInteractive();
             this.backToMenu.on('pointerdown', () => {
-                console.log("menu");
                 this.scene.start("Menu");
             });
             this.gameData.menuOpen = true;
@@ -293,7 +295,8 @@ class Game extends Phaser.Scene {
     collectPickup(player, pickup) {
         pickup.destroy();
         // TODO Transition goes here
-        this.player.bugsCollected++;
+        this.player.bugsCollected.push(pickup.bugID);
+        window.localStorage.setItem('bugCollection', JSON.stringify(this.player.bugsCollected));
         // Apply effect of bug
         eval(this.bugsJSON[pickup.bugID].effect);
         this.player.sprite.setBounce(this.player.bounce);
