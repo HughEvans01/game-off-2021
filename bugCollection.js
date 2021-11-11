@@ -20,7 +20,7 @@ class BugCollection extends Phaser.Scene {
         });
 
         this.bugsJSON = this.cache.json.get('bugs');
-        var gameStart = this.add.text(725, 575, 'BACK', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif', fontSize: '32px' });
+        var gameStart = this.add.text(725, 575, 'BACK', { fontFamily: 'font1', fontSize: '32px' });
         gameStart.setOrigin(0.5,0.5);
         gameStart.setInteractive();
         gameStart.on('pointerdown', () => {

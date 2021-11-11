@@ -58,7 +58,7 @@ class Game extends Phaser.Scene {
         this.latestPlatform.setOrigin(0.5,0);
 
         // Display distance travelled
-        this.distanceTraveled = this.add.text(10, 0, '0', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif', fontSize: '32px' });
+        this.distanceTraveled = this.add.text(10, 0, '0', { fontFamily: 'font2', fontSize: '32px' });
         this.distanceTraveled.setScrollFactor(0);
 
         // Spawn the player
@@ -144,9 +144,9 @@ class Game extends Phaser.Scene {
             // Update distance travelled
             this.player.distanceTraveled = Math.round((this.player.sprite.x - 400)/100);
             if (this.player.distanceTraveled > 0) {
-                this.distanceTraveled.setText(this.player.distanceTraveled);
+                this.distanceTraveled.setText(this.player.distanceTraveled+ "m");
             } else {
-                this.distanceTraveled.setText("0");
+                this.distanceTraveled.setText("0m");
             }
             // Move player left and right
             if (this.cursors.left.isDown || this.left_held) {
@@ -209,10 +209,14 @@ class Game extends Phaser.Scene {
         if (!this.gameData.menuOpen) {
             this.graphics = this.add.graphics();
             this.graphics.fillStyle(0x000000, 1);
-            this.graphics.fillRoundedRect(this.player.sprite.x-200, this.player.sprite.y-150, 400, 300, 32);
-            this.score = this.add.text(this.player.sprite.x,  this.player.sprite.y-50, this.player.distanceTraveled, { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif', fontSize: '32px' });
+            this.graphics.fillRoundedRect(this.player.sprite.x-150, this.player.sprite.y-100, 300, 200, 32);
+            this.score = this.add.text(this.player.sprite.x,  this.player.sprite.y-50, this.player.distanceTraveled + "m", { fontFamily: 'font2', fontSize: '16px' });
             this.score.setOrigin(0.5,0.5);
-            this.playAgain = this.add.text(this.player.sprite.x, this.player.sprite.y, 'PLAY AGAIN', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif', fontSize: '32px' });
+            var text = 'PLAY AGAIN';
+            if (this.player.alive) {
+                text = 'RESTART';
+            }
+            this.playAgain = this.add.text(this.player.sprite.x, this.player.sprite.y, text, { fontFamily: 'font1', fontSize: '32px' });
             this.playAgain.setOrigin(0.5,0.5);
             this.playAgain.setInteractive();
             this.playAgain.on('pointerdown', () => {
@@ -221,7 +225,7 @@ class Game extends Phaser.Scene {
             this.playAgain.on('pointerdown', () => {
                 this.scene.pause("Menu");
             });
-            this.backToMenu = this.add.text(this.player.sprite.x, this.player.sprite.y+50, 'BACK TO MENU', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif', fontSize: '32px' });
+            this.backToMenu = this.add.text(this.player.sprite.x, this.player.sprite.y+50, 'BACK TO MENU', { fontFamily: 'font1', fontSize: '32px' });
             this.backToMenu.setOrigin(0.5,0.5);
             this.backToMenu.setInteractive();
             this.backToMenu.on('pointerdown', () => {

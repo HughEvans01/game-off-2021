@@ -1,0 +1,13 @@
+@font-face {
+  font-family: font1;
+  src: url('assets/Teletekst-8eX0.ttf');
+  font-weight:400;
+  font-weight:normal;
+}
+
+@font-face {
+  font-family: font2;
+  src: url('assets/Teletactile-3zavL.ttf');
+  font-weight:400;
+  font-weight:normal;
+}
