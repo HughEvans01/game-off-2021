@@ -1,1 +1,1 @@
-[{"name":"Jumping bug","colour":"0xcc0000","effect":"this.player.jump = 660;"},{"name":"Speed bug","colour":"0xc1f7f2","effect":"this.player.speed=660;"},{"name":"Bounce bug","colour":"0x32a852","effect":"this.player.bounce=1;"}]
+[{"name":"Jumping bug","colour":"0xcc0000","effect":"this.player.jump = 660;"},{"name":"Speed bug","colour":"0xc1f7f2","effect":"this.player.speed=660;"},{"name":"Bounce bug","colour":"0xf542f2","effect":"this.player.bounce=1;"},{"name":"Death","colour":"0x000000","effect":"this.killPlayer();"}]
