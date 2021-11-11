@@ -203,6 +203,11 @@ class Game extends Phaser.Scene {
             this.pause.destroy();
             this.toggleMenu();
         }
+        // Update the bug collection with any newly collected bugs
+        // Don't overwrite the bug collection if one already exists
+        var existingCollection = JSON.parse(window.localStorage.getItem('bugCollection'));
+        this.player.bugsCollected = this.player.bugsCollected.concat(existingCollection);
+        window.localStorage.setItem('bugCollection', JSON.stringify(this.player.bugsCollected));
     }
 
     toggleMenu() {
@@ -302,13 +307,6 @@ class Game extends Phaser.Scene {
         pickup.destroy();
         // TODO Transition goes here
         this.player.bugsCollected.push(pickup.bugID);
-        console.log(this.player.bugsCollected);
-        // Don't overwrite the bug collection if one already exists
-        var existingCollection = JSON.parse(window.localStorage.getItem('bugCollection'));
-        console.log("exist",existingCollection);
-        this.player.bugsCollected.concat(existingCollection);
-        console.log(this.player.bugsCollected);
-        window.localStorage.setItem('bugCollection', JSON.stringify(this.player.bugsCollected));
         // Apply effect of bug
         eval(this.bugsJSON[pickup.bugID].effect);
         this.player.sprite.setBounce(this.player.bounce);
