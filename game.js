@@ -52,8 +52,10 @@ class Game extends Phaser.Scene {
         // Setup start of level
         this.background = this.add.image(400, 300, 'sky');
         this.background.setScrollFactor(0);
-        this.platforms.create(400, 400, 'ground');
-        this.platforms.create(1000, 400, 'ground');
+        this.latestPlatform = this.platforms.create(400, 400, 'ground');
+        this.latestPlatform.setOrigin(0.5,0);
+        this.latestPlatform = this.platforms.create(1000, 400, 'ground');
+        this.latestPlatform.setOrigin(0.5,0);
 
         // Display distance travelled
         this.distanceTraveled = this.add.text(10, 0, '0', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif', fontSize: '32px' });
@@ -246,13 +248,13 @@ class Game extends Phaser.Scene {
             offset = -50;
         }
         // TODO This line is very, very stupid. Replace it with something better
-        this.platforms.create(this.latestPlatform.x + 600, this.latestPlatform.y + offset, 'ground');
+        this.latestPlatform = this.platforms.create(this.latestPlatform.x + 600, this.latestPlatform.y + offset, 'ground');
+        this.latestPlatform.setOrigin(0.5,0);
         // Destroy platforms that are a long way behind the player
         if (this.totalPlatforms > this.gameData.maxObjects) {
            this.platforms.children.entries[0].destroy();
         }
         this.totalPlatforms = this.platforms.children.entries.length;
-        this.latestPlatform = this.platforms.children.entries[this.totalPlatforms-1];
     }
 
     spawnEnemy() {
