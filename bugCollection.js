@@ -10,7 +10,7 @@ class BugCollection extends Phaser.Scene {
 
     preload() {
         this.load.image('sky', 'assets/sky.png');
-        this.load.image('star', 'assets/star.png');
+        this.load.spritesheet('bug', 'assets/bug.png', { frameWidth: 32, frameHeight: 32 });
         this.load.json('bugs', 'bugs.json');
     }
 
@@ -18,6 +18,13 @@ class BugCollection extends Phaser.Scene {
         this.pickups = this.physics.add.group({
             allowGravity: false,
             immovable: true,
+        });
+
+        this.anims.create({
+            key: 'bug',
+            frames: this.anims.generateFrameNumbers('bug', { start: 0, end: 2 }),
+            frameRate: 2,
+            repeat: -1
         });
 
         this.background = this.add.image(400, 300, 'sky');
@@ -37,7 +44,8 @@ class BugCollection extends Phaser.Scene {
         var bug = null;
         for (var i=0; i<this.bugsJSON.length; i++) {
             bug = this.bugsJSON[i];
-            var pickup = this.pickups.create(x, y, 'star');
+            var pickup = this.pickups.create(x, y, 'bug');
+            pickup.anims.play('bug', true);
             pickup.setOrigin(0.5,0.5);
             pickup.setTintFill("0x959aa1");
             if (this.bugCollection) {

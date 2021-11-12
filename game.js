@@ -21,13 +21,13 @@ class Game extends Phaser.Scene {
     preload() {
         this.load.image('sky', 'assets/sky.png');
         this.load.image('ground', 'assets/platform.png');
-        this.load.image('star', 'assets/star.png');
         this.load.image('left', 'assets/left.png');
         this.load.image('up', 'assets/up.png');
         this.load.image('right', 'assets/right.png');
         this.load.image('pause', 'assets/pause.png');
         this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
         this.load.spritesheet('enemy', 'assets/enemy.png', { frameWidth: 80, frameHeight: 80 });
+        this.load.spritesheet('bug', 'assets/bug.png', { frameWidth: 32, frameHeight: 32 });
         this.load.json('bugs', 'bugs.json');
     }
 
@@ -96,6 +96,13 @@ class Game extends Phaser.Scene {
         this.anims.create({
             key: 'enemy',
             frames: this.anims.generateFrameNumbers('enemy', { start: 0, end: 1 }),
+            frameRate: 2,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'bug',
+            frames: this.anims.generateFrameNumbers('bug', { start: 0, end: 2 }),
             frameRate: 2,
             repeat: -1
         });
@@ -295,7 +302,8 @@ class Game extends Phaser.Scene {
 
     spawnPickup() {
         var offset = this.latestPlatform.width/2;
-        this.pickup = this.pickups.create(this.latestPlatform.x + offset, this.latestPlatform.y - 50, 'star');
+        this.pickup = this.pickups.create(this.latestPlatform.x + offset, this.latestPlatform.y - 50, 'bug');
+        this.pickup.anims.play('bug', true);
         this.totalPickups = this.pickups.children.entries.length;
         this.pickup.bugID = Phaser.Math.Between(0, this.bugsJSON.length-1);
         this.pickup.setTintFill(this.bugsJSON[this.pickup.bugID].colour);
