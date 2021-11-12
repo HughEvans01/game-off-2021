@@ -22,12 +22,12 @@ class Game extends Phaser.Scene {
         this.load.image('sky', 'assets/sky.png');
         this.load.image('ground', 'assets/platform.png');
         this.load.image('star', 'assets/star.png');
-        this.load.image('bomb', 'assets/bomb.png');
         this.load.image('left', 'assets/left.png');
         this.load.image('up', 'assets/up.png');
         this.load.image('right', 'assets/right.png');
         this.load.image('pause', 'assets/pause.png');
         this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+        this.load.spritesheet('enemy', 'assets/enemy.png', { frameWidth: 80, frameHeight: 80 });
         this.load.json('bugs', 'bugs.json');
     }
 
@@ -90,6 +90,13 @@ class Game extends Phaser.Scene {
             key: 'right',
             frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
             frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'enemy',
+            frames: this.anims.generateFrameNumbers('enemy', { start: 0, end: 1 }),
+            frameRate: 2,
             repeat: -1
         });
 
@@ -206,7 +213,9 @@ class Game extends Phaser.Scene {
         // Update the bug collection with any newly collected bugs
         // Don't overwrite the bug collection if one already exists
         var existingCollection = JSON.parse(window.localStorage.getItem('bugCollection'));
-        this.player.bugsCollected = this.player.bugsCollected.concat(existingCollection);
+        if (existingCollection) {
+            this.player.bugsCollected = this.player.bugsCollected.concat(existingCollection);
+        }
         window.localStorage.setItem('bugCollection', JSON.stringify(this.player.bugsCollected));
     }
 
@@ -267,7 +276,8 @@ class Game extends Phaser.Scene {
     }
 
     spawnEnemy() {
-        this.latestEnemy = this.enemies.create(this.latestPlatform.x, this.latestPlatform.y - 50, 'bomb'); 
+        this.latestEnemy = this.enemies.create(this.latestPlatform.x, this.latestPlatform.y - 50, 'enemy');
+        this.latestEnemy.anims.play('enemy', true);
         this.totalEnemies = this.enemies.children.entries.length;
         // Destroy enemies that are a long way behind the player
         if (this.totalEnemies > this.gameData.maxObjects) {
