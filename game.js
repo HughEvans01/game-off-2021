@@ -285,6 +285,7 @@ class Game extends Phaser.Scene {
     spawnEnemy() {
         this.latestEnemy = this.enemies.create(this.latestPlatform.x, this.latestPlatform.y - 50, 'enemy');
         this.latestEnemy.anims.play('enemy', true);
+        this.latestEnemy.setSize(64, 64, true);
         this.totalEnemies = this.enemies.children.entries.length;
         // Destroy enemies that are a long way behind the player
         if (this.totalEnemies > this.gameData.maxObjects) {
@@ -301,8 +302,7 @@ class Game extends Phaser.Scene {
     }
 
     spawnPickup() {
-        var offset = this.latestPlatform.width/2;
-        this.pickup = this.pickups.create(this.latestPlatform.x + offset, this.latestPlatform.y - 50, 'bug');
+        this.pickup = this.pickups.create(this.latestPlatform.x, this.latestPlatform.y - 50, 'bug');
         this.pickup.anims.play('bug', true);
         this.totalPickups = this.pickups.children.entries.length;
         this.pickup.bugID = Phaser.Math.Between(0, this.bugsJSON.length-1);
@@ -313,7 +313,7 @@ class Game extends Phaser.Scene {
         }
         this.tweens.add({
             targets: this.pickup,
-            x: this.latestPlatform.x - offset,
+            y: this.latestPlatform.y - 30,
             duration: 2000,
             ease: 'Sine.easeInOut',
             repeat: -1,
