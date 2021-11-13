@@ -58,7 +58,8 @@ class Game extends Phaser.Scene {
         this.latestPlatform.setOrigin(0.5,0);
 
         // Display distance travelled
-        this.distanceTraveled = this.add.text(10, 0, '0', { fontFamily: 'font2', fontSize: '32px' });
+        this.distanceTraveled = this.add.text((37*this.gameData.UIScale), 27*this.gameData.UIScale, '0', { fontFamily: 'font2', fontSize: '32px' });
+        this.distanceTraveled.setOrigin(0.5,0.5);
         this.distanceTraveled.setScrollFactor(0);
 
         // Spawn the player
