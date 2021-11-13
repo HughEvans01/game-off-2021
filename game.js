@@ -129,7 +129,7 @@ class Game extends Phaser.Scene {
             this.rightButton.on('pointerdown', () => { this.right_held = true; });
             this.rightButton.on('pointerup', () => { this.right_held = false; });
         }
-        this.pause = this.add.image(800-(37*this.gameData.UIScale), 37*this.gameData.UIScale, 'pause');
+        this.pause = this.add.image(800-(37*this.gameData.UIScale), 27*this.gameData.UIScale, 'pause');
         this.pause.setScrollFactor(0);
         this.pause.setScale(this.gameData.UIScale);
         this.pause.setInteractive();
