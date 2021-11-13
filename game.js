@@ -27,7 +27,7 @@ class Game extends Phaser.Scene {
         this.load.image('pause', 'assets/pause.png');
         this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
         this.load.spritesheet('enemy', 'assets/enemy.png', { frameWidth: 80, frameHeight: 80 });
-        this.load.spritesheet('bug', 'assets/bug.png', { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet('bug', 'assets/bug.png', { frameWidth: 64, frameHeight: 64 });
         this.load.json('bugs', 'bugs.json');
     }
 
@@ -313,7 +313,7 @@ class Game extends Phaser.Scene {
         }
         this.tweens.add({
             targets: this.pickup,
-            y: this.latestPlatform.y - 30,
+            y: this.latestPlatform.y - 40,
             duration: 2000,
             ease: 'Sine.easeInOut',
             repeat: -1,
