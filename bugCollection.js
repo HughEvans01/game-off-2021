@@ -55,9 +55,9 @@ class BugCollection extends Phaser.Scene {
             }
 
             x = x + 200;
-            if (x > 500) {
+            if (x > 700) {
                 x = 100;
-                y = y + 50;
+                y = y + 100;
             }
         }
     }
