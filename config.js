@@ -15,7 +15,7 @@ document.fonts.ready.then(function(font_face_set) {
                 debug: false
             }
         },
-        scene: [ Menu, Game, BugCollection ]
+        scene: [ Menu, Game, BugCollection, Options ]
     };
 
     new Phaser.Game(config);
