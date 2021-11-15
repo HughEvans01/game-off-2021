@@ -35,6 +35,8 @@ class Game extends Phaser.Scene {
         this.gameData.UIScale = this.gameOptions.UIScale;
         this.bugsJSON = this.cache.json.get('bugs');
 
+        this.highScore = JSON.parse(window.localStorage.getItem('highScore'));
+
         this.platforms = this.physics.add.group({
             allowGravity: false,
             immovable: true,
@@ -229,6 +231,13 @@ class Game extends Phaser.Scene {
             this.graphics = this.add.graphics();
             this.graphics.fillStyle(0x000000, 1);
             this.graphics.fillRoundedRect(this.player.sprite.x-150, this.player.sprite.y-100, 300, 200, 32);
+            this.newHighScore = this.add.text(this.player.sprite.x,  this.player.sprite.y-75, "", { fontFamily: 'font2', fontSize: '16px' });
+            this.newHighScore.setOrigin(0.5,0.5);
+            if (this.player.distanceTraveled > this.highScore) {
+                this.highScore = this.player.distanceTraveled;
+                window.localStorage.setItem('highScore', JSON.stringify(this.highScore));
+                this.newHighScore.setText("NEW HIGH SCORE");
+            }
             this.score = this.add.text(this.player.sprite.x,  this.player.sprite.y-50, this.player.distanceTraveled + "m", { fontFamily: 'font2', fontSize: '16px' });
             this.score.setOrigin(0.5,0.5);
             var text = 'PLAY AGAIN';
@@ -253,6 +262,7 @@ class Game extends Phaser.Scene {
             this.gameData.menuOpen = true;
         } else {
             this.graphics.destroy();
+            this.newHighScore.destroy();
             this.score.destroy();
             this.playAgain.destroy();
             this.backToMenu.destroy();

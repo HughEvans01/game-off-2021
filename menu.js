@@ -35,7 +35,13 @@ class Menu extends Phaser.Scene {
             this.gameOptions = gameOptions;
             window.localStorage.setItem('gameOptions', JSON.stringify(this.gameOptions));
         }
-        
+
+        // Set high score to zero if it hasn't already been set
+        this.highScore = JSON.parse(window.localStorage.getItem('highScore'));
+        if (!this.highScore) {
+            this.highScore = 0;
+            window.localStorage.setItem('highScore', JSON.stringify(this.highScore));
+        }
 
         const screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
         const screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
