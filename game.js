@@ -5,7 +5,6 @@ class Game extends Phaser.Scene {
     }
 
     init() {
-        this.graphics;
         // Used to prepare data
         this.gameData = {
             maxObjects: 25,
@@ -72,6 +71,8 @@ class Game extends Phaser.Scene {
             bugsCollected: [],
             alive: true
         };
+
+        this.player.bugsCollected = JSON.parse(window.localStorage.getItem('bugCollection'));
         this.player.sprite = this.physics.add.sprite(400, 360, 'dude');
         this.player.sprite.setBounce(this.player.bounce);
         this.anims.create({
@@ -218,12 +219,6 @@ class Game extends Phaser.Scene {
             this.pause.destroy();
             this.toggleMenu();
         }
-        // Update the bug collection with any newly collected bugs
-        // Don't overwrite the bug collection if one already exists
-        var existingCollection = JSON.parse(window.localStorage.getItem('bugCollection'));
-        if (existingCollection) {
-            this.player.bugsCollected = this.player.bugsCollected.concat(existingCollection);
-        }
         window.localStorage.setItem('bugCollection', JSON.stringify(this.player.bugsCollected));
     }
 
@@ -325,7 +320,7 @@ class Game extends Phaser.Scene {
     collectPickup(player, pickup) {
         pickup.destroy();
         // TODO Transition goes here
-        this.player.bugsCollected.push(pickup.bugID);
+        this.player.bugsCollected[pickup.bugID] = true;
         // Apply effect of bug
         eval(this.bugsJSON[pickup.bugID].effect);
         this.player.sprite.setBounce(this.player.bounce);
