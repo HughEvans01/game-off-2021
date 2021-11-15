@@ -73,7 +73,8 @@ class Game extends Phaser.Scene {
             bounce: 0,
             distanceTraveled: 0,
             bugsCollected: [],
-            alive: true
+            alive: true,
+            scale: 1,
         };
 
         this.player.bugsCollected = JSON.parse(window.localStorage.getItem('bugCollection'));
