@@ -31,6 +31,9 @@ class Game extends Phaser.Scene {
     }
 
     create(data) {
+        this.gameOptions = JSON.parse(window.localStorage.getItem('gameOptions'));
+        this.gameData.UIScale = this.gameOptions.UIScale;
+        console.log(this.gameData.UIScale);
         this.bugsJSON = this.cache.json.get('bugs');
 
         this.platforms = this.physics.add.group({
