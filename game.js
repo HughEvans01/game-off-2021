@@ -75,6 +75,7 @@ class Game extends Phaser.Scene {
             bugsCollected: [],
             alive: true,
             scale: 1,
+            idleSpeed: 0,
         };
 
         this.player.bugsCollected = JSON.parse(window.localStorage.getItem('bugCollection'));
@@ -177,7 +178,7 @@ class Game extends Phaser.Scene {
                 this.player.sprite.setVelocityX(this.player.speed,);
                 this.player.sprite.anims.play('right', true);
             } else {
-                this.player.sprite.setVelocityX(0);
+                this.player.sprite.setVelocityX(this.player.idleSpeed);
                 this.left_pressed = false;
                 this.right_pressed = false;
                 this.player.sprite.anims.play('turn');

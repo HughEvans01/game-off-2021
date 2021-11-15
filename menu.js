@@ -63,6 +63,9 @@ class Menu extends Phaser.Scene {
         options.on('pointerdown', () => {
             this.scene.start("Options");
         });
+
+         var newHighScore = this.add.text(screenCenterX,  500, "HIGH SCORE: " + this.highScore + "m", { fontFamily: 'font2', fontSize: '16px' });
+         newHighScore.setOrigin(0.5,0.5);
     }
 
     update(time, delta) {
