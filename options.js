@@ -34,7 +34,7 @@ class Options extends Phaser.Scene {
 
         this.upButton = this.add.image(screenCenterX+125, 200, 'up');
         this.upButton.setInteractive();
-        this.upButton.setScale(0.25);
+        this.upButton.setScale(0.4);
         this.upButton.on('pointerdown', () => {
             if (this.gameOptions.UIScale < 2) {
                 this.gameOptions.UIScale = this.gameOptions.UIScale + 0.1;
@@ -43,7 +43,7 @@ class Options extends Phaser.Scene {
 
         this.downButton = this.add.image(screenCenterX+175, 200, 'down');
         this.downButton.setInteractive();
-        this.downButton.setScale(0.25);
+        this.downButton.setScale(0.4);
         this.downButton.on('pointerdown', () => {
             if (this.gameOptions.UIScale > 1) {
                 this.gameOptions.UIScale = this.gameOptions.UIScale - 0.1;
@@ -53,7 +53,6 @@ class Options extends Phaser.Scene {
     }
 
     update(time, delta) {
-        console.log(this.UIScale);
         this.UIScaleValue.setText(Math.round(this.gameOptions.UIScale*10)/10);
     }
 }

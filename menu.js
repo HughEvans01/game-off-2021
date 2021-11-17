@@ -43,28 +43,30 @@ class Menu extends Phaser.Scene {
             window.localStorage.setItem('highScore', JSON.stringify(this.highScore));
         }
 
+        this.gameOptions = JSON.parse(window.localStorage.getItem('gameOptions'));
+
         const screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
         const screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
-        var gameStart = this.add.text(screenCenterX, 300, 'PLAY GAME', { fontFamily: 'font1', fontSize: '32px' });
+        var gameStart = this.add.text(screenCenterX, 250, 'PLAY GAME', { fontFamily: 'font1', fontSize: (32*this.gameOptions.UIScale)+'px' });
         gameStart.setOrigin(0.5,0.5);
         gameStart.setInteractive();
         gameStart.on('pointerdown', () => {
             this.scene.start("Game");
         });
-        var collection = this.add.text(screenCenterX, 350, 'COLLECTION', { fontFamily: 'font1', fontSize: '32px' });
+        var collection = this.add.text(screenCenterX, 250 + (50*this.gameOptions.UIScale), 'COLLECTION', { fontFamily: 'font1', fontSize: (32*this.gameOptions.UIScale)+'px' });
         collection.setOrigin(0.5,0.5);
         collection.setInteractive();
         collection.on('pointerdown', () => {
             this.scene.start("BugCollection");
         });
-        var options = this.add.text(screenCenterX, 400, 'OPTIONS', { fontFamily: 'font1', fontSize: '32px' });
+        var options = this.add.text(screenCenterX, 250 + (100*this.gameOptions.UIScale), 'OPTIONS', { fontFamily: 'font1', fontSize: (32*this.gameOptions.UIScale)+'px' });
         options.setOrigin(0.5,0.5);
         options.setInteractive();
         options.on('pointerdown', () => {
             this.scene.start("Options");
         });
 
-         var newHighScore = this.add.text(screenCenterX,  500, "HIGH SCORE: " + this.highScore + "m", { fontFamily: 'font2', fontSize: '16px' });
+         var newHighScore = this.add.text(screenCenterX,  500+ (10*this.gameOptions.UIScale), "HIGH SCORE: " + this.highScore + "m", { fontFamily: 'font2', fontSize: (16*this.gameOptions.UIScale)+'px' });
          newHighScore.setOrigin(0.5,0.5);
     }
 
