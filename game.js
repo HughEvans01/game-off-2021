@@ -60,6 +60,11 @@ class Game extends Phaser.Scene {
         this.latestPlatform = this.platforms.create(1000, 400, 'ground');
         this.latestPlatform.setOrigin(0.5,0);
 
+        // Used for testing specfic bugs
+        /*this.pickup = this.pickups.create(this.latestPlatform.x, this.latestPlatform.y - 50, 'bug');
+        this.pickup.bugID = 5;
+        this.pickup.setTintFill(this.bugsJSON[this.pickup.bugID].colour);*/
+
         // Display distance travelled
         this.distanceTraveled = this.add.text((37*this.gameData.UIScale), 27*this.gameData.UIScale, '0', { fontFamily: 'font2', fontSize: '32px' });
         this.distanceTraveled.setOrigin(0.5,0.5);
@@ -76,6 +81,7 @@ class Game extends Phaser.Scene {
             alive: true,
             scale: 1,
             idleSpeed: 0,
+            direction: null,
         };
 
         this.player.bugsCollected = JSON.parse(window.localStorage.getItem('bugCollection'));
@@ -172,13 +178,19 @@ class Game extends Phaser.Scene {
             }
             // Move player left and right
             if (this.cursors.left.isDown || this.left_held) {
+                this.player.direction = 'left';
                 this.player.sprite.setVelocityX(-this.player.speed);
                 this.player.sprite.anims.play('left', true);
             } else if (this.cursors.right.isDown || this.right_held) {
+                this.player.direction = 'right';
                 this.player.sprite.setVelocityX(this.player.speed,);
                 this.player.sprite.anims.play('right', true);
             } else {
-                this.player.sprite.setVelocityX(this.player.idleSpeed);
+                if (this.player.direction == 'left') {
+                    this.player.sprite.setVelocityX(this.player.idleSpeed*-1);
+                } else if (this.player.direction == 'right') {
+                    this.player.sprite.setVelocityX(this.player.idleSpeed);
+                }
                 this.left_pressed = false;
                 this.right_pressed = false;
                 this.player.sprite.anims.play('turn');
@@ -204,7 +216,7 @@ class Game extends Phaser.Scene {
             var entity = Phaser.Math.Between(0, 9);
             if (entity < 4) {
                 this.spawnEnemy();
-            } else if (entity == 9){
+            } else if (entity > 8){
                 this.spawnPickup();
             }
         }
