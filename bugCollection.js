@@ -15,6 +15,8 @@ class BugCollection extends Phaser.Scene {
     }
 
     create(data) {
+        this.gameOptions = JSON.parse(window.localStorage.getItem('gameOptions'));
+        
         this.pickups = this.physics.add.group({
             allowGravity: false,
             immovable: true,
@@ -30,9 +32,11 @@ class BugCollection extends Phaser.Scene {
         this.background = this.add.image(400, 300, 'sky');
 
         this.bugsJSON = this.cache.json.get('bugs');
-        var gameStart = this.add.text(725, 575, 'BACK', { fontFamily: 'font1', fontSize: '32px' });
+        var gameStart = this.add.text(725, 575, 'BACK', { fontFamily: 'font1', fontSize: (32*this.gameOptions.UIScale)+'px' });
         gameStart.setInteractive();
+        gameStart.setOrigin(0.5,0.5);
         gameStart.on('pointerdown', () => {
+            window.localStorage.setItem('gameOptions', JSON.stringify(this.gameOptions));
             this.scene.start("Menu");
         });
 
