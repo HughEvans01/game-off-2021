@@ -16,7 +16,7 @@ class BugCollection extends Phaser.Scene {
 
     create(data) {
         this.gameOptions = JSON.parse(window.localStorage.getItem('gameOptions'));
-        
+
         this.pickups = this.physics.add.group({
             allowGravity: false,
             immovable: true,
@@ -50,18 +50,18 @@ class BugCollection extends Phaser.Scene {
             var pickup = this.pickups.create(x, y, 'bug');
             pickup.anims.play('bug', true);
             pickup.setOrigin(0.5,0.5);
-            pickup.setScale(0.5);
+            pickup.setScale(0.6*this.gameOptions.UIScale);
             pickup.setTintFill("0x959aa1");
             if (this.bugCollection[i]) {
                 pickup.setTintFill(bug.colour);
-                var text = this.add.text(x, y+25, bug.name, { fontFamily: 'font2', fontSize: '16px' });
+                var text = this.add.text(x, y+30*this.gameOptions.UIScale, bug.name, { fontFamily: 'font2', fontSize: (10*this.gameOptions.UIScale)+'px' });
                 text.setOrigin(0.5,0.5);
             }
 
             x = x + 200;
             if (x > 700) {
                 x = 100;
-                y = y + 100;
+                y = y + 80 + 20*this.gameOptions.UIScale;
             }
         }
     }
