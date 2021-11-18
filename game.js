@@ -25,14 +25,13 @@ class Game extends Phaser.Scene {
         this.load.image('right', 'assets/right.png');
         this.load.image('pause', 'assets/pause.png');
         this.load.spritesheet('dude', 'assets/player.png', { frameWidth: 28, frameHeight: 36 });
-        this.load.spritesheet('enemy', 'assets/enemy.png', { frameWidth: 80, frameHeight: 80, spacing: 1});
+        this.load.spritesheet('enemy', 'assets/enemy.png', { frameWidth: 80, frameHeight: 80});
         this.load.spritesheet('bug', 'assets/bug.png', { frameWidth: 64, frameHeight: 64 });
         this.load.json('bugs', 'bugs.json');
     }
 
     create(data) {
         this.gameOptions = JSON.parse(window.localStorage.getItem('gameOptions'));
-        this.gameData.UIScale = this.gameOptions.UIScale;
         this.bugsJSON = this.cache.json.get('bugs');
 
         this.highScore = JSON.parse(window.localStorage.getItem('highScore'));
@@ -66,7 +65,7 @@ class Game extends Phaser.Scene {
         this.pickup.setTintFill(this.bugsJSON[this.pickup.bugID].colour);*/
 
         // Display distance travelled
-        this.distanceTraveled = this.add.text((37*this.gameData.UIScale), 27*this.gameData.UIScale, '0', { fontFamily: 'font2', fontSize: '32px' });
+        this.distanceTraveled = this.add.text((30*this.gameOptions.UIScale), 25*this.gameOptions.UIScale, '0', { fontFamily: 'font2', fontSize: (32*this.gameOptions.UIScale)+'px' });
         this.distanceTraveled.setOrigin(0.5,0.5);
         this.distanceTraveled.setScrollFactor(0);
 
@@ -125,15 +124,15 @@ class Game extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys();
         if (this.gameData.mobile) {
             this.input.addPointer(2); // For multi-touch
-            this.leftButton = this.add.image(800 - (144*this.gameData.UIScale), 600 - 49*this.gameData.UIScale, 'left');
-            this.upButton = this.add.image(48*this.gameData.UIScale, 600 - 49*this.gameData.UIScale, 'up');
-            this.rightButton = this.add.image(800 - 48*this.gameData.UIScale, 600 - 49*this.gameData.UIScale, 'right');
+            this.leftButton = this.add.image(800 - (144*this.gameOptions.UIScale), 600 - 49*this.gameOptions.UIScale, 'left');
+            this.upButton = this.add.image(48*this.gameOptions.UIScale, 600 - 49*this.gameOptions.UIScale, 'up');
+            this.rightButton = this.add.image(800 - 48*this.gameOptions.UIScale, 600 - 49*this.gameOptions.UIScale, 'right');
             this.leftButton.setScrollFactor(0);
             this.upButton.setScrollFactor(0);
             this.rightButton.setScrollFactor(0);
-            this.leftButton.setScale(this.gameData.UIScale);
-            this.upButton.setScale(this.gameData.UIScale);
-            this.rightButton.setScale(this.gameData.UIScale);
+            this.leftButton.setScale(this.gameOptions.UIScale);
+            this.upButton.setScale(this.gameOptions.UIScale);
+            this.rightButton.setScale(this.gameOptions.UIScale);
             this.leftButton.setInteractive();
             this.upButton.setInteractive();
             this.rightButton.setInteractive();
@@ -143,9 +142,9 @@ class Game extends Phaser.Scene {
             this.rightButton.on('pointerdown', () => { this.right_held = true; });
             this.rightButton.on('pointerup', () => { this.right_held = false; });
         }
-        this.pause = this.add.image(800-(37*this.gameData.UIScale), 27*this.gameData.UIScale, 'pause');
+        this.pause = this.add.image(800-(37*this.gameOptions.UIScale), 27*this.gameOptions.UIScale, 'pause');
         this.pause.setScrollFactor(0);
-        this.pause.setScale(this.gameData.UIScale);
+        this.pause.setScale(this.gameOptions.UIScale);
         this.pause.setInteractive();
         this.pause.on('pointerdown', () => { this.toggleMenu(); });
 
