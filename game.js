@@ -65,8 +65,7 @@ class Game extends Phaser.Scene {
         this.pickup.setTintFill(this.bugsJSON[this.pickup.bugID].colour);*/
 
         // Display distance travelled
-        this.distanceTraveled = this.add.text((50*this.gameOptions.UIScale), 25*this.gameOptions.UIScale, '0', { fontFamily: 'font2', fontSize: (32*this.gameOptions.UIScale)+'px' });
-        this.distanceTraveled.setOrigin(0.5,0.5);
+        this.distanceTraveled = this.add.text((20*this.gameOptions.UIScale), 10*this.gameOptions.UIScale, '0', { fontFamily: 'font2', fontSize: (32*this.gameOptions.UIScale)+'px' });
         this.distanceTraveled.setScrollFactor(0);
 
         // Spawn the player
