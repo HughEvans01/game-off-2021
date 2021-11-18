@@ -244,21 +244,21 @@ class Game extends Phaser.Scene {
         if (!this.gameData.menuOpen) {
             this.graphics = this.add.graphics();
             this.graphics.fillStyle(0x000000, 1);
-            this.graphics.fillRoundedRect(this.player.sprite.x-150, this.player.sprite.y-100, 300, 200, 32);
-            this.newHighScore = this.add.text(this.player.sprite.x,  this.player.sprite.y-75, "", { fontFamily: 'font2', fontSize: '16px' });
+            this.graphics.fillRoundedRect(this.player.sprite.x-150*this.gameOptions.UIScale, this.player.sprite.y-100*this.gameOptions.UIScale, 300*this.gameOptions.UIScale, 200*this.gameOptions.UIScale, 32);
+            this.newHighScore = this.add.text(this.player.sprite.x,  this.player.sprite.y-75*this.gameOptions.UIScale, "", { fontFamily: 'font2', fontSize: (16*this.gameOptions.UIScale)+'px' });
             this.newHighScore.setOrigin(0.5,0.5);
             if (this.player.distanceTraveled > this.highScore) {
                 this.highScore = this.player.distanceTraveled;
                 window.localStorage.setItem('highScore', JSON.stringify(this.highScore));
                 this.newHighScore.setText("NEW HIGH SCORE");
             }
-            this.score = this.add.text(this.player.sprite.x,  this.player.sprite.y-50, this.player.distanceTraveled + "m", { fontFamily: 'font2', fontSize: '16px' });
+            this.score = this.add.text(this.player.sprite.x,  this.player.sprite.y-50*this.gameOptions.UIScale, this.player.distanceTraveled + "m", { fontFamily: 'font2', fontSize: (16*this.gameOptions.UIScale)+'px' });
             this.score.setOrigin(0.5,0.5);
             var text = 'PLAY AGAIN';
             if (this.player.alive) {
                 text = 'RESTART';
             }
-            this.playAgain = this.add.text(this.player.sprite.x, this.player.sprite.y, text, { fontFamily: 'font1', fontSize: '32px' });
+            this.playAgain = this.add.text(this.player.sprite.x, this.player.sprite.y, text, { fontFamily: 'font1', fontSize: (32*this.gameOptions.UIScale)+'px' });
             this.playAgain.setOrigin(0.5,0.5);
             this.playAgain.setInteractive();
             this.playAgain.on('pointerdown', () => {
@@ -267,7 +267,7 @@ class Game extends Phaser.Scene {
             this.playAgain.on('pointerdown', () => {
                 this.scene.pause("Menu");
             });
-            this.backToMenu = this.add.text(this.player.sprite.x, this.player.sprite.y+50, 'BACK TO MENU', { fontFamily: 'font1', fontSize: '32px' });
+            this.backToMenu = this.add.text(this.player.sprite.x, this.player.sprite.y+50*this.gameOptions.UIScale, 'BACK TO MENU', { fontFamily: 'font1', fontSize: (32*this.gameOptions.UIScale)+'px' });
             this.backToMenu.setOrigin(0.5,0.5);
             this.backToMenu.setInteractive();
             this.backToMenu.on('pointerdown', () => {
