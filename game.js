@@ -156,12 +156,15 @@ class Game extends Phaser.Scene {
 
     update(time, delta) {
         // TODO The below feels dumb, improve it?
-        // Keep touch screen controls on top
+        // Keep UI on top of game
         if (this.gameData.mobile) {
             this.children.bringToTop(this.leftButton);
             this.children.bringToTop(this.upButton);
             this.children.bringToTop(this.rightButton);
         }
+        this.children.bringToTop(this.distanceTraveled);
+        this.children.bringToTop(this.pause);
+
         if (this.player.alive) {
             // Track player with camera
             if (this.player.sprite.y < 600) {
