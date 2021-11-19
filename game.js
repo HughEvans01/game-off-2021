@@ -87,10 +87,6 @@ class Game extends Phaser.Scene {
         this.player.sprite = this.physics.add.sprite(400, 360, 'dude');
         this.player.sprite.setOrigin(0.5,0.5);
         this.player.sprite.setBounce(this.player.bounce);
-        /*this.player.sprite.setActive(false).setVisible(false);
-        this.spawnTimer = this.time.delayedCall(500, (func) => {
-            this.player.sprite.setActive(true).setVisible(true);
-        });*/
 
         this.anims.create({
             key: 'left',
@@ -270,7 +266,7 @@ class Game extends Phaser.Scene {
             this.playAgain.setOrigin(0.5,0.5);
             this.playAgain.setInteractive();
             this.playAgain.on('pointerdown', () => {
-                this.scene.restart();
+                this.scene.start();
             });
             this.playAgain.on('pointerdown', () => {
                 this.scene.pause("Menu");
