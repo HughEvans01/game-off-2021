@@ -55,8 +55,9 @@ class Game extends Phaser.Scene {
         // Setup start of level
         this.background = this.add.image(400, 300, 'sky');
         this.background.setScrollFactor(0);
-        this.latestPlatform = this.platforms.create(400, 400, 'ground');
-        this.latestPlatform.setOrigin(0.5,0);
+
+        this.latestPlatform = null; // Clear platform from previous run so start platform is at correct height. Sorry :(
+        this.spawnPlatform(400);
         this.spawnPlatform(this.latestPlatform.x+this.gameData.distanceBetweenPlatforms);
 
         // Used for testing specfic bugs
@@ -84,7 +85,13 @@ class Game extends Phaser.Scene {
 
         this.player.bugsCollected = JSON.parse(window.localStorage.getItem('bugCollection'));
         this.player.sprite = this.physics.add.sprite(400, 360, 'dude');
+        this.player.sprite.setOrigin(0.5,0.5);
         this.player.sprite.setBounce(this.player.bounce);
+        /*this.player.sprite.setActive(false).setVisible(false);
+        this.spawnTimer = this.time.delayedCall(500, (func) => {
+            this.player.sprite.setActive(true).setVisible(true);
+        });*/
+
         this.anims.create({
             key: 'left',
             frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
@@ -287,16 +294,21 @@ class Game extends Phaser.Scene {
 
     spawnPlatform(x) {
         // Difference in y from height of prev platform
-        var offset;
-        if (this.latestPlatform.y >= this.gameData.maxPlatformHeight && this.latestPlatform.y <= this.gameData.minPlatformHeight) {
-            offset = Phaser.Math.Between(-1, 1) * 50;
-        } else if (this.latestPlatform.y <= this.gameData.maxPlatformHeight) {
-            offset = 50;
-        } else if (this.latestPlatform.y >= this.gameData.minPlatformHeight) {
-            offset = -50;
+        if (this.latestPlatform) {
+            var offset;
+            if (this.latestPlatform.y >= this.gameData.maxPlatformHeight && this.latestPlatform.y <= this.gameData.minPlatformHeight) {
+                offset = Phaser.Math.Between(-1, 1) * 50;
+            } else if (this.latestPlatform.y <= this.gameData.maxPlatformHeight) {
+                offset = 50;
+            } else if (this.latestPlatform.y >= this.gameData.minPlatformHeight) {
+                offset = -50;
+            }
+            this.latestPlatform = this.platforms.create(x, this.latestPlatform.y + offset, 'ground');
+        } else {
+            this.latestPlatform = this.platforms.create(x, 400, 'ground');
         }
         // TODO This line is stupid. Replace the y part with something better
-        this.latestPlatform = this.platforms.create(x, this.latestPlatform.y + offset, 'ground');
+        
         this.latestPlatform.setOrigin(0.5,0);
         // Destroy platforms that are a long way behind the player
         if (this.totalPlatforms > this.gameData.maxObjects) {
