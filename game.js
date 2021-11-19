@@ -212,7 +212,7 @@ class Game extends Phaser.Scene {
         if ((a - b) < 2000) {
             this.spawnPlatform(this.latestPlatform.x + this.gameData.distanceBetweenPlatforms);
             var entity = Phaser.Math.Between(0, 9);
-            if (entity < 4) {
+            if (entity < 6 ) {
                 this.spawnEnemy();
             } else if (entity > 8){
                 this.spawnPickup();
@@ -338,7 +338,7 @@ class Game extends Phaser.Scene {
     }
 
     spawnPickup() {
-        var offset = Phaser.Math.Between(-this.latestPlatform.width/2, this.latestPlatform.width/2);
+        var offset = Phaser.Math.Between((-this.latestPlatform.width/2)+16, (this.latestPlatform.width/2)-16);
         this.pickup = this.pickups.create(this.latestPlatform.x + offset, this.latestPlatform.y - 50, 'bug');
         this.pickup.anims.play('bug', true);
         this.totalPickups = this.pickups.children.entries.length;
