@@ -322,7 +322,8 @@ class Game extends Phaser.Scene {
     }
 
     spawnPickup() {
-        this.pickup = this.pickups.create(this.latestPlatform.x, this.latestPlatform.y - 50, 'bug');
+        var offset = Phaser.Math.Between(-this.latestPlatform.width/2, this.latestPlatform.width/2);
+        this.pickup = this.pickups.create(this.latestPlatform.x + offset, this.latestPlatform.y - 50, 'bug');
         this.pickup.anims.play('bug', true);
         this.totalPickups = this.pickups.children.entries.length;
         this.pickup.bugID = Phaser.Math.Between(0, this.bugsJSON.length-1);
