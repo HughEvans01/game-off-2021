@@ -303,7 +303,31 @@ class Game extends Phaser.Scene {
     }
 
     spawnEnemy() {
-        this.latestEnemy = this.enemies.create(this.latestPlatform.x, this.latestPlatform.y - 50, 'enemy');
+        var direction = Phaser.Math.Between(0, 1);
+        if (direction == 1) {
+            // Enemy start by going up
+            this.latestEnemy = this.enemies.create(this.latestPlatform.x, this.latestPlatform.y - 200, 'enemy');
+            this.tweens.add({
+                targets: this.latestEnemy,
+                y: this.latestPlatform.y -50,
+                duration: 2000,
+                ease: 'Sine.easeInOut',
+                repeat: -1,
+                yoyo: true
+            });
+
+        } else {
+            // Enemy starts by going down
+            this.latestEnemy = this.enemies.create(this.latestPlatform.x, this.latestPlatform.y - 50, 'enemy');
+            this.tweens.add({
+                targets: this.latestEnemy,
+                y: this.latestPlatform.y - 200,
+                duration: 2000,
+                ease: 'Sine.easeInOut',
+                repeat: -1,
+                yoyo: true
+            });
+        }
         this.latestEnemy.anims.play('enemy', true);
         this.latestEnemy.setSize(64, 64, true);
         this.totalEnemies = this.enemies.children.entries.length;
@@ -311,14 +335,6 @@ class Game extends Phaser.Scene {
         if (this.totalEnemies > this.gameData.maxObjects) {
             this.enemies.children.entries[0].destroy();
         }
-        this.tweens.add({
-            targets: this.latestEnemy,
-            y: this.latestPlatform.y - 200,
-            duration: 2000,
-            ease: 'Sine.easeInOut',
-            repeat: -1,
-            yoyo: true
-        });
     }
 
     spawnPickup() {
