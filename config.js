@@ -12,7 +12,8 @@ document.fonts.ready.then(function(font_face_set) {
             default: 'arcade',
             arcade: {
                 gravity: { y: 600 },
-                debug: false
+                debug: false,
+                fixedStep: true
             }
         },
         scene: [ Menu, Game, BugCollection, Options ]
