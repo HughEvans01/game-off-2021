@@ -13,6 +13,7 @@ class Game extends Phaser.Scene {
             mobile: false,
             UIScale: 1.1,
             menuOpen: false,
+            distanceBetweenPlatforms: 500,
         };
         this.gameData.mobile = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
     }
@@ -56,8 +57,7 @@ class Game extends Phaser.Scene {
         this.background.setScrollFactor(0);
         this.latestPlatform = this.platforms.create(400, 400, 'ground');
         this.latestPlatform.setOrigin(0.5,0);
-        this.latestPlatform = this.platforms.create(1000, 400, 'ground');
-        this.latestPlatform.setOrigin(0.5,0);
+        this.spawnPlatform(this.latestPlatform.x+this.gameData.distanceBetweenPlatforms);
 
         // Used for testing specfic bugs
         /*this.pickup = this.pickups.create(this.latestPlatform.x, this.latestPlatform.y - 50, 'bug');
@@ -210,7 +210,7 @@ class Game extends Phaser.Scene {
         var a = this.latestPlatform.x;
         var b = this.player.sprite.x;
         if ((a - b) < 2000) {
-            this.spawnPlatform();
+            this.spawnPlatform(this.latestPlatform.x + this.gameData.distanceBetweenPlatforms);
             var entity = Phaser.Math.Between(0, 9);
             if (entity < 4) {
                 this.spawnEnemy();
@@ -282,7 +282,7 @@ class Game extends Phaser.Scene {
         }
     }
 
-    spawnPlatform() {
+    spawnPlatform(x) {
         // Difference in y from height of prev platform
         var offset;
         if (this.latestPlatform.y >= this.gameData.maxPlatformHeight && this.latestPlatform.y <= this.gameData.minPlatformHeight) {
@@ -293,7 +293,7 @@ class Game extends Phaser.Scene {
             offset = -50;
         }
         // TODO This line is very, very stupid. Replace it with something better
-        this.latestPlatform = this.platforms.create(this.latestPlatform.x + 600, this.latestPlatform.y + offset, 'ground');
+        this.latestPlatform = this.platforms.create(x, this.latestPlatform.y + offset, 'ground');
         this.latestPlatform.setOrigin(0.5,0);
         // Destroy platforms that are a long way behind the player
         if (this.totalPlatforms > this.gameData.maxObjects) {
