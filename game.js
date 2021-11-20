@@ -69,7 +69,7 @@ class Game extends Phaser.Scene {
         this.distanceTraveled = this.add.text((20*this.gameOptions.UIScale), 10*this.gameOptions.UIScale, '0', { fontFamily: 'font2', fontSize: (32*this.gameOptions.UIScale)+'px' });
         this.distanceTraveled.setScrollFactor(0);
 
-        // Spawn the player
+        // Define player attributes
         this.player = {
             sprite: null,
             speed: 300,
@@ -80,10 +80,13 @@ class Game extends Phaser.Scene {
             alive: true,
             scale: 1,
             idleSpeed: 0,
-            direction: null,
+            direction: 'right',
         };
 
+        // Get existing bug collection so it can be updated in play
         this.player.bugsCollected = JSON.parse(window.localStorage.getItem('bugCollection'));
+
+        // Spawn the player sprite
         this.player.sprite = this.physics.add.sprite(400, 360, 'dude');
         this.player.sprite.setOrigin(0.5,0.5);
         this.player.sprite.setBounce(this.player.bounce);
@@ -96,22 +99,30 @@ class Game extends Phaser.Scene {
         });
 
         this.anims.create({
-            key: 'turn',
-            frames: [ { key: 'dude', frame: 4 } ],
-            frameRate: 20
+            key: 'leftIdle',
+            frames: this.anims.generateFrameNumbers('dude', { start: 3, end: 4 }),
+            frameRate: 1,
+            repeat: -1
         });
 
         this.anims.create({
             key: 'right',
-            frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+            frames: this.anims.generateFrameNumbers('dude', { start: 7, end: 10 }),
             frameRate: 5,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'rightIdle',
+            frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 6 }),
+            frameRate: 1,
             repeat: -1
         });
 
         this.anims.create({
             key: 'enemy',
             frames: this.anims.generateFrameNumbers('enemy', { start: 0, end: 1 }),
-            frameRate: 2,
+            frameRate: 1,
             repeat: -1
         });
 
@@ -184,20 +195,30 @@ class Game extends Phaser.Scene {
             if (this.cursors.left.isDown || this.left_held) {
                 this.player.direction = 'left';
                 this.player.sprite.setVelocityX(-this.player.speed);
-                this.player.sprite.anims.play('left', true);
+                if (this.player.sprite.body.touching.down) {
+                    this.player.sprite.anims.play('left', true);
+                } else {
+                   this.player.sprite.anims.play('leftIdle', true);
+                }
             } else if (this.cursors.right.isDown || this.right_held) {
                 this.player.direction = 'right';
                 this.player.sprite.setVelocityX(this.player.speed,);
-                this.player.sprite.anims.play('right', true);
+                if (this.player.sprite.body.touching.down) {
+                    this.player.sprite.anims.play('right', true);
+                } else {
+                    this.player.sprite.anims.play('rightIdle', true);
+                }
             } else {
                 if (this.player.direction == 'left') {
                     this.player.sprite.setVelocityX(this.player.idleSpeed*-1);
+                    this.player.sprite.anims.play('leftIdle', true);
                 } else if (this.player.direction == 'right') {
                     this.player.sprite.setVelocityX(this.player.idleSpeed);
+                    this.player.sprite.anims.play('rightIdle', true);
                 }
                 this.left_pressed = false;
                 this.right_pressed = false;
-                this.player.sprite.anims.play('turn');
+                
             }
             // Jump
             if ((this.cursors.up.isDown || this.jump_pressed) && this.player.sprite.body.touching.down) {
