@@ -25,7 +25,7 @@ class Game extends Phaser.Scene {
         this.load.image('up', 'assets/up.png');
         this.load.image('right', 'assets/right.png');
         this.load.image('pause', 'assets/pause.png');
-        this.load.spritesheet('dude', 'assets/player.png', { frameWidth: 28, frameHeight: 36 });
+        this.load.spritesheet('dude', 'assets/player.png', { frameWidth: 20, frameHeight: 36 });
         this.load.spritesheet('enemy', 'assets/enemy.png', { frameWidth: 80, frameHeight: 80});
         this.load.spritesheet('bug', 'assets/bug.png', { frameWidth: 64, frameHeight: 64 });
         this.load.json('bugs', 'bugs.json');
@@ -107,7 +107,7 @@ class Game extends Phaser.Scene {
 
         this.anims.create({
             key: 'right',
-            frames: this.anims.generateFrameNumbers('dude', { start: 7, end: 10 }),
+            frames: this.anims.generateFrameNumbers('dude', { start: 6, end: 9 }),
             frameRate: 5,
             repeat: -1
         });
