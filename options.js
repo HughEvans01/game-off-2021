@@ -27,7 +27,7 @@ class Options extends Phaser.Scene {
             this.scene.start("Menu");
         });
 
-        var UIScaleLabel = this.add.text(screenCenterX-100*this.gameOptions.UIScale, 200, 'UI SCALE', { fontFamily: 'font2', fontSize: (32*this.gameOptions.UIScale)+'px' });
+        var UIScaleLabel = this.add.text(screenCenterX-120*this.gameOptions.UIScale, 200, 'UI SCALE', { fontFamily: 'font2', fontSize: (32*this.gameOptions.UIScale)+'px' });
         UIScaleLabel.setOrigin(0.5,0.5);
 
         this.UIScaleValue = this.add.text(screenCenterX+50*this.gameOptions.UIScale, 200, this.UIScale, { fontFamily: 'font2', fontSize: (32*this.gameOptions.UIScale)+'px' });
@@ -54,6 +54,6 @@ class Options extends Phaser.Scene {
     }
 
     update(time, delta) {
-        this.UIScaleValue.setText(Math.round(this.gameOptions.UIScale*10)/10);
+        this.UIScaleValue.setText(Math.round((this.gameOptions.UIScale/2)*200)+"%");
     }
 }
