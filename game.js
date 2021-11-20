@@ -13,6 +13,7 @@ class Game extends Phaser.Scene {
             UIScale: 1.1,
             menuOpen: false,
             distanceBetweenPlatforms: 500,
+            enemiesVisible: true,
         };
         this.gameData.mobile = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
     }
@@ -35,6 +36,8 @@ class Game extends Phaser.Scene {
         this.bugsJSON = this.cache.json.get('bugs');
 
         this.highScore = JSON.parse(window.localStorage.getItem('highScore'));
+
+        this.gameData.enemiesVisible = true;
 
         this.platforms = this.physics.add.group({
             allowGravity: false,
@@ -61,7 +64,7 @@ class Game extends Phaser.Scene {
 
         // Used for testing specfic bugs
         /*this.pickup = this.pickups.create(this.latestPlatform.x, this.latestPlatform.y - 50, 'bug');
-        this.pickup.bugID = 5;
+        this.pickup.bugID = 6;
         this.pickup.setTintFill(this.bugsJSON[this.pickup.bugID].colour);*/
 
         // Display distance travelled
@@ -346,6 +349,18 @@ class Game extends Phaser.Scene {
                 repeat: -1,
                 yoyo: true
             });
+        }
+        // Implements the sneaky bug
+        this.changedExisting = false;
+        if (this.gameData.enemiesVisible == false) {
+            this.latestEnemy.setTintFill(0x55AA00);
+            // Changes the colour of any bugs that spawned before bug was picked up
+            if (this.changedExisting == false) {
+                for (var i=0; i<this.enemies.children.size; i++) {
+                    this.enemies.children.entries[i].setTintFill(0x55AA00);
+                }
+                this.changedExisting = true;
+            }
         }
         this.latestEnemy.anims.play('enemy', true);
         this.latestEnemy.setSize(64, 64, true);
