@@ -75,7 +75,7 @@ class Game extends Phaser.Scene {
         this.player = {
             sprite: null,
             speed: 300,
-            jump: 330,
+            jump: 275,
             bounce: 0,
             distanceTraveled: 0,
             bugsCollected: [],
