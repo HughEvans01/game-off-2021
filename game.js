@@ -303,14 +303,7 @@ class Game extends Phaser.Scene {
         } else {
             this.latestPlatform = this.platforms.create(x, 400, 'ground');
         }
-        // TODO This line is stupid. Replace the y part with something better
-        
         this.latestPlatform.setOrigin(0.5,0);
-        // Destroy platforms that are a long way behind the player
-        if (this.totalPlatforms > this.gameData.maxObjects) {
-           this.platforms.children.entries[0].destroy();
-        }
-        this.totalPlatforms = this.platforms.children.entries.length;
     }
 
     spawnEnemy() {
