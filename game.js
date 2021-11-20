@@ -238,7 +238,7 @@ class Game extends Phaser.Scene {
             var entity = Phaser.Math.Between(0, 9);
             if (entity < 6 ) {
                 this.spawnEnemy();
-            } else if (entity > 8){
+            } else if (entity > 6){
                 this.spawnPickup();
             }
         }
