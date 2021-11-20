@@ -7,7 +7,6 @@ class Game extends Phaser.Scene {
     init() {
         // Used to prepare data
         this.gameData = {
-            maxObjects: 25,
             minPlatformHeight: 400,
             maxPlatformHeight: 200,
             mobile: false,
@@ -80,7 +79,7 @@ class Game extends Phaser.Scene {
             alive: true,
             scale: 1,
             idleSpeed: 0,
-            direction: 'right',
+            direction: 'right'
         };
 
         // Get existing bug collection so it can be updated in play
@@ -140,15 +139,9 @@ class Game extends Phaser.Scene {
             this.leftButton = this.add.image(800 - (144*this.gameOptions.UIScale), 600 - 49*this.gameOptions.UIScale, 'left');
             this.upButton = this.add.image(48*this.gameOptions.UIScale, 600 - 49*this.gameOptions.UIScale, 'up');
             this.rightButton = this.add.image(800 - 48*this.gameOptions.UIScale, 600 - 49*this.gameOptions.UIScale, 'right');
-            this.leftButton.setScrollFactor(0);
-            this.upButton.setScrollFactor(0);
-            this.rightButton.setScrollFactor(0);
-            this.leftButton.setScale(this.gameOptions.UIScale);
-            this.upButton.setScale(this.gameOptions.UIScale);
-            this.rightButton.setScale(this.gameOptions.UIScale);
-            this.leftButton.setInteractive();
-            this.upButton.setInteractive();
-            this.rightButton.setInteractive();
+            this.leftButton.setScrollFactor(0).setScale(this.gameOptions.UIScale).setInteractive();
+            this.upButton.setScrollFactor(0).setScale(this.gameOptions.UIScale).setInteractive();
+            this.rightButton.setScrollFactor(0).setScale(this.gameOptions.UIScale).setInteractive();
             this.leftButton.on('pointerdown', () => { this.left_held = true; });
             this.leftButton.on('pointerup', () => { this.left_held = false; });
             this.upButton.on('pointerdown', () => { this.jump_pressed = true; });
@@ -234,6 +227,7 @@ class Game extends Phaser.Scene {
         this.totalPlatforms = this.platforms.children.entries.length;
         this.latestPlatform = this.platforms.children.entries[this.totalPlatforms-1];
         // TODO Logic for spawning platforms and entities is stupid, improve it
+        // Distance between player and edge of level generation
         var a = this.latestPlatform.x;
         var b = this.player.sprite.x;
         if ((a - b) < 2000) {
@@ -355,24 +349,14 @@ class Game extends Phaser.Scene {
         }
         this.latestEnemy.anims.play('enemy', true);
         this.latestEnemy.setSize(64, 64, true);
-        this.totalEnemies = this.enemies.children.entries.length;
-        /*// Destroy enemies that are a long way behind the player
-        if (this.totalEnemies > this.gameData.maxObjects) {
-            this.enemies.children.entries[0].destroy();
-        }*/
     }
 
     spawnPickup() {
         var offset = Phaser.Math.Between((-this.latestPlatform.width/2)+16, (this.latestPlatform.width/2)-16);
         this.pickup = this.pickups.create(this.latestPlatform.x + offset, this.latestPlatform.y - 50, 'bug');
         this.pickup.anims.play('bug', true);
-        this.totalPickups = this.pickups.children.entries.length;
         this.pickup.bugID = Phaser.Math.Between(0, this.bugsJSON.length-1);
         this.pickup.setTintFill(this.bugsJSON[this.pickup.bugID].colour);
-        /*// Destroy pickups that are a long way behind the player
-        if (this.totalPickups > this.gameData.maxObjects) {
-            this.pickups.children.entries[0].destroy();
-        }*/
         this.tweens.add({
             targets: this.pickup,
             y: this.latestPlatform.y - 40,
