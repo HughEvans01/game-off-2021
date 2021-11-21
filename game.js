@@ -19,15 +19,15 @@ class Game extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('sky', 'assets/sky.png');
-        this.load.image('ground', 'assets/platform.png');
-        this.load.image('left', 'assets/left.png');
-        this.load.image('up', 'assets/up.png');
-        this.load.image('right', 'assets/right.png');
-        this.load.image('pause', 'assets/pause.png');
-        this.load.spritesheet('dude', 'assets/player.png', { frameWidth: 20, frameHeight: 36 });
-        this.load.spritesheet('enemy', 'assets/enemy.png', { frameWidth: 80, frameHeight: 80});
-        this.load.spritesheet('bug', 'assets/bug.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.image('sky', 'assets/sprites/sky.png');
+        this.load.image('ground', 'assets/sprites/platform.png');
+        this.load.image('left', 'assets/sprites/left.png');
+        this.load.image('up', 'assets/sprites/up.png');
+        this.load.image('right', 'assets/sprites/right.png');
+        this.load.image('pause', 'assets/sprites/pause.png');
+        this.load.spritesheet('dude', 'assets/sprites/player.png', { frameWidth: 20, frameHeight: 36 });
+        this.load.spritesheet('enemy', 'assets/sprites/enemy.png', { frameWidth: 80, frameHeight: 80});
+        this.load.spritesheet('bug', 'assets/sprites/bug.png', { frameWidth: 64, frameHeight: 64 });
         this.load.json('bugs', 'bugs.json');
     }
 
