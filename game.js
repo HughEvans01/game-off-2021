@@ -25,8 +25,8 @@ class Game extends Phaser.Scene {
         this.load.image('up', 'assets/sprites/up.png');
         this.load.image('right', 'assets/sprites/right.png');
         this.load.image('pause', 'assets/sprites/pause.png');
-        this.load.spritesheet('dude', 'assets/sprites/player.png', { frameWidth: 20, frameHeight: 36 });
-        this.load.spritesheet('enemy', 'assets/sprites/enemy.png', { frameWidth: 80, frameHeight: 80});
+        this.load.spritesheet('dude', 'assets/sprites/player.png', { frameWidth: 20, frameHeight: 36, spacing: 1 });
+        this.load.spritesheet('enemy', 'assets/sprites/enemy.png', { frameWidth: 80, frameHeight: 80, spacing: 1 });
         this.load.spritesheet('bug', 'assets/sprites/bug.png', { frameWidth: 64, frameHeight: 64 });
         
         this.load.audio('jump', 'assets/sounds/jump.wav');
