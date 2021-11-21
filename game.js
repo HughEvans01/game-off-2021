@@ -25,7 +25,7 @@ class Game extends Phaser.Scene {
         this.load.image('up', 'assets/sprites/up.png');
         this.load.image('right', 'assets/sprites/right.png');
         this.load.image('pause', 'assets/sprites/pause.png');
-        this.load.spritesheet('dude', 'assets/sprites/player.png', { frameWidth: 20, frameHeight: 36, spacing: 1 });
+        this.load.spritesheet('player', 'assets/sprites/player.png', { frameWidth: 20, frameHeight: 36, spacing: 1 });
         this.load.spritesheet('enemy', 'assets/sprites/enemy.png', { frameWidth: 80, frameHeight: 80, spacing: 1 });
         this.load.spritesheet('bug', 'assets/sprites/bug.png', { frameWidth: 64, frameHeight: 64 });
         
@@ -102,34 +102,34 @@ class Game extends Phaser.Scene {
         this.player.bugsCollected = JSON.parse(window.localStorage.getItem('bugCollection'));
 
         // Spawn the player sprite
-        this.player.sprite = this.physics.add.sprite(400, 360, 'dude');
+        this.player.sprite = this.physics.add.sprite(400, 360, 'player');
         this.player.sprite.setOrigin(0.5,0.5);
         this.player.sprite.setBounce(this.player.bounce);
 
         this.anims.create({
             key: 'left',
-            frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+            frames: this.anims.generateFrameNumbers('player', { start: 0, end: 3 }),
             frameRate: 5,
             repeat: -1
         });
 
         this.anims.create({
             key: 'leftIdle',
-            frames: this.anims.generateFrameNumbers('dude', { start: 3, end: 4 }),
+            frames: this.anims.generateFrameNumbers('player', { start: 3, end: 4 }),
             frameRate: 1,
             repeat: -1
         });
 
         this.anims.create({
             key: 'right',
-            frames: this.anims.generateFrameNumbers('dude', { start: 6, end: 9 }),
+            frames: this.anims.generateFrameNumbers('player', { start: 6, end: 9 }),
             frameRate: 5,
             repeat: -1
         });
 
         this.anims.create({
             key: 'rightIdle',
-            frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 6 }),
+            frames: this.anims.generateFrameNumbers('player', { start: 5, end: 6 }),
             frameRate: 1,
             repeat: -1
         });
