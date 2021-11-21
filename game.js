@@ -13,8 +13,7 @@ class Game extends Phaser.Scene {
             UIScale: 1.1,
             menuOpen: false,
             distanceBetweenPlatforms: 500,
-            enemiesVisible: true,
-            volume: 0.25,
+            enemiesVisible: true
         };
         this.gameData.mobile = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
     }
@@ -45,9 +44,9 @@ class Game extends Phaser.Scene {
 
         this.gameData.enemiesVisible = true;
 
-        this.jumpSound = this.sound.add('jump', {volume: this.gameData.volume});
-        this.pickupSound = this.sound.add('pickup', {volume: this.gameData.volume});
-        this.enemySound = this.sound.add('pickup', {volume: this.gameData.volume});
+        this.jumpSound = this.sound.add('jump', {volume: this.gameOptions.volume});
+        this.pickupSound = this.sound.add('pickup', {volume: this.gameOptions.volume});
+        this.enemySound = this.sound.add('enemy', {volume: this.gameOptions.volume});
 
         this.platforms = this.physics.add.group({
             allowGravity: false,

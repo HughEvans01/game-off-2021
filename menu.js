@@ -31,6 +31,7 @@ class Menu extends Phaser.Scene {
         if (!this.gameOptions) {
             var gameOptions = {
                 UIScale: 1.1,
+                volume: 1
             };
             this.gameOptions = gameOptions;
             window.localStorage.setItem('gameOptions', JSON.stringify(this.gameOptions));

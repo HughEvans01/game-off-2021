@@ -9,8 +9,8 @@ class Options extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('up', 'assets/up.png');
-        this.load.image('down', 'assets/down.png');
+        this.load.image('up', 'assets/sprites/up.png');
+        this.load.image('down', 'assets/sprites/down.png');
     }
 
     create(data) {
@@ -27,33 +27,62 @@ class Options extends Phaser.Scene {
             this.scene.start("Menu");
         });
 
+        // UI Scale options
         var UIScaleLabel = this.add.text(screenCenterX-120*this.gameOptions.UIScale, 200, 'UI SCALE', { fontFamily: 'font2', fontSize: (32*this.gameOptions.UIScale)+'px' });
         UIScaleLabel.setOrigin(0.5,0.5);
 
         this.UIScaleValue = this.add.text(screenCenterX+50*this.gameOptions.UIScale, 200, this.UIScale, { fontFamily: 'font2', fontSize: (32*this.gameOptions.UIScale)+'px' });
         this.UIScaleValue.setOrigin(0.5,0.5);
 
-        this.upButton = this.add.image(screenCenterX+125*this.gameOptions.UIScale, 200, 'up');
-        this.upButton.setInteractive();
-        this.upButton.setScale(0.4*this.gameOptions.UIScale);
-        this.upButton.on('pointerdown', () => {
+        this.uiScaleUpButton = this.add.image(screenCenterX+125*this.gameOptions.UIScale, 200, 'up');
+        this.uiScaleUpButton.setInteractive();
+        this.uiScaleUpButton.setScale(0.4*this.gameOptions.UIScale);
+        this.uiScaleUpButton.on('pointerdown', () => {
             if (this.gameOptions.UIScale < 2) {
                 this.gameOptions.UIScale = this.gameOptions.UIScale + 0.1;
             }
         });
 
-        this.downButton = this.add.image(screenCenterX+175*this.gameOptions.UIScale, 200, 'down');
-        this.downButton.setInteractive();
-        this.downButton.setScale(0.4*this.gameOptions.UIScale);
-        this.downButton.on('pointerdown', () => {
+        this.uiScaleDownButton = this.add.image(screenCenterX+175*this.gameOptions.UIScale, 200, 'down');
+        this.uiScaleDownButton.setInteractive();
+        this.uiScaleDownButton.setScale(0.4*this.gameOptions.UIScale);
+        this.uiScaleDownButton.on('pointerdown', () => {
             if (this.gameOptions.UIScale > 1) {
                 this.gameOptions.UIScale = this.gameOptions.UIScale - 0.1;
             }
+        });
+
+        // Volume options
+        this.volumeLabel = this.add.text(screenCenterX-120*this.gameOptions.UIScale, 300, 'VOLUME  ', { fontFamily: 'font2', fontSize: (32*this.gameOptions.UIScale)+'px' });
+        this.volumeLabel.setOrigin(0.5,0.5);
+
+        this.volumeValue = this.add.text(screenCenterX+50*this.gameOptions.UIScale, 300, this.UIScale, { fontFamily: 'font2', fontSize: (32*this.gameOptions.UIScale)+'px' });
+        this.volumeValue.setOrigin(0.5,0.5);
+
+        this.volumeUpButton = this.add.image(screenCenterX+125*this.gameOptions.UIScale, 300, 'up');
+        this.volumeUpButton.setInteractive();
+        this.volumeUpButton.setScale(0.4*this.gameOptions.UIScale);
+        this.volumeUpButton.on('pointerdown', () => {
+            if (this.gameOptions.volume < 1) {
+                this.gameOptions.volume = this.gameOptions.volume + 0.1;
+            }
+
+        });
+
+        this.volumeDownButton = this.add.image(screenCenterX+175*this.gameOptions.UIScale, 300, 'down');
+        this.volumeDownButton.setInteractive();
+        this.volumeDownButton.setScale(0.4*this.gameOptions.UIScale);
+        this.volumeDownButton.on('pointerdown', () => {
+            if (this.gameOptions.volume > 0) {
+                this.gameOptions.volume = this.gameOptions.volume - 0.1;
+            }
+
         });
 
     }
 
     update(time, delta) {
         this.UIScaleValue.setText(Math.round((this.gameOptions.UIScale/2)*200)+"%");
+        this.volumeValue.setText(Math.round((this.gameOptions.volume)*100)+"%");
     }
 }
