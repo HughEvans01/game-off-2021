@@ -14,6 +14,7 @@ class Game extends Phaser.Scene {
             menuOpen: false,
             distanceBetweenPlatforms: 500,
             enemiesVisible: true,
+            volume: 0.25,
         };
         this.gameData.mobile = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
     }
@@ -28,6 +29,11 @@ class Game extends Phaser.Scene {
         this.load.spritesheet('dude', 'assets/sprites/player.png', { frameWidth: 20, frameHeight: 36 });
         this.load.spritesheet('enemy', 'assets/sprites/enemy.png', { frameWidth: 80, frameHeight: 80});
         this.load.spritesheet('bug', 'assets/sprites/bug.png', { frameWidth: 64, frameHeight: 64 });
+        
+        this.load.audio('jump', 'assets/sounds/jump.wav');
+        this.load.audio('pickup', 'assets/sounds/pickup.wav');
+        this.load.audio('enemy', 'assets/sounds/enemy.wav');
+
         this.load.json('bugs', 'bugs.json');
     }
 
@@ -38,6 +44,10 @@ class Game extends Phaser.Scene {
         this.highScore = JSON.parse(window.localStorage.getItem('highScore'));
 
         this.gameData.enemiesVisible = true;
+
+        this.jumpSound = this.sound.add('jump', {volume: this.gameData.volume});
+        this.pickupSound = this.sound.add('pickup', {volume: this.gameData.volume});
+        this.enemySound = this.sound.add('pickup', {volume: this.gameData.volume});
 
         this.platforms = this.physics.add.group({
             allowGravity: false,
@@ -161,6 +171,8 @@ class Game extends Phaser.Scene {
         this.physics.add.overlap(this.player.sprite, this.pickups, this.collectPickup, null, this);
         this.physics.add.overlap(this.player.sprite, this.enemies, this.killPlayer, null, this);
 
+        //this.time.addEvent({ delay: 1000, callback: playEnemySound, callbackScope: this, loop: true });
+
 
     }   
 
@@ -218,6 +230,7 @@ class Game extends Phaser.Scene {
             }
             // Jump
             if ((this.cursors.up.isDown || this.jump_pressed) && this.player.sprite.body.touching.down) {
+                this.jumpSound.play();
                 this.player.sprite.setVelocityY(-this.player.jump);
                 this.jump_pressed = false;
             }
@@ -242,6 +255,7 @@ class Game extends Phaser.Scene {
                 this.spawnPickup();
             }
         }
+
     }
 
     killPlayer() {
@@ -383,6 +397,7 @@ class Game extends Phaser.Scene {
     }
 
     collectPickup(player, pickup) {
+        this.pickupSound.play();
         pickup.destroy();
         // TODO Transition goes here
         this.player.bugsCollected[pickup.bugID] = true;
@@ -390,4 +405,29 @@ class Game extends Phaser.Scene {
         eval(this.bugsJSON[pickup.bugID].effect);
         this.player.sprite.setBounce(this.player.bounce);
     }
+
+    getDistanceToClosestEnemy() {
+        var distance;
+        var shortestDistance = 10000; // Arbitrarily large number, there should typically be an enemy closer than this
+        for (var i=0; i<this.enemies.children.size; i++) {
+            distance = Math.abs(this.player.sprite.x - this.enemies.children.entries[i].x);
+            if (distance < shortestDistance) {
+                shortestDistance = distance;
+            }
+        }
+        return shortestDistance;
+    }
 }
+
+// TODO Get this working
+// Mothballed distance based enemy sound
+/*
+function playEnemySound() {
+    // Play enemy sound when enemies are nearby
+    var distance = this.getDistanceToClosestEnemy();
+    if (distance < 600) {
+        this.enemySound.play('volume', {volume: 0.5});
+        console.log("test");
+    }
+}
+*/
