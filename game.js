@@ -33,7 +33,7 @@ class Game extends Phaser.Scene {
         this.load.audio('pickup', 'assets/sounds/pickup.wav');
         this.load.audio('enemy', 'assets/sounds/enemy.wav');
         this.load.audio('fall', 'assets/sounds/fall.wav');
-
+        this.load.audio('death', 'assets/sounds/death.wav');
 
         this.load.json('bugs', 'bugs.json');
     }
@@ -50,6 +50,7 @@ class Game extends Phaser.Scene {
         this.pickupSound = this.sound.add('pickup', {volume: this.gameOptions.volume});
         this.enemy = this.sound.add('enemy', {volume: this.gameOptions.volume});
         this.fall = this.sound.add('fall', {volume: this.gameOptions.volume});
+        this.death = this.sound.add('death', {volume: this.gameOptions.volume});
 
         this.platforms = this.physics.add.group({
             allowGravity: false,
@@ -171,7 +172,7 @@ class Game extends Phaser.Scene {
 
         this.physics.add.collider(this.player.sprite, this.platforms);
         this.physics.add.overlap(this.player.sprite, this.pickups, this.collectPickup, null, this);
-        this.physics.add.overlap(this.player.sprite, this.enemies, this.killPlayer, null, this);
+        this.physics.add.overlap(this.player.sprite, this.enemies, function() {this.death.play();this.killPlayer();}, null, this);
 
         this.time.addEvent({ delay: 1000, callback: playenemy, callbackScope: this, loop: true });
 
