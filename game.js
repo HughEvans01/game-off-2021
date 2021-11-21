@@ -31,7 +31,7 @@ class Game extends Phaser.Scene {
         
         this.load.audio('jump', 'assets/sounds/jump.wav');
         this.load.audio('pickup', 'assets/sounds/pickup.wav');
-        this.load.audio('enemy', 'assets/sounds/enemy.wav');
+        this.load.audio('enemySound', 'assets/sounds/enemy.wav');
 
         this.load.json('bugs', 'bugs.json');
     }
@@ -46,7 +46,7 @@ class Game extends Phaser.Scene {
 
         this.jumpSound = this.sound.add('jump', {volume: this.gameOptions.volume});
         this.pickupSound = this.sound.add('pickup', {volume: this.gameOptions.volume});
-        this.enemySound = this.sound.add('enemy', {volume: this.gameOptions.volume});
+        this.enemySound = this.sound.add('enemySound', {volume: this.gameOptions.volume});
 
         this.platforms = this.physics.add.group({
             allowGravity: false,
@@ -170,7 +170,7 @@ class Game extends Phaser.Scene {
         this.physics.add.overlap(this.player.sprite, this.pickups, this.collectPickup, null, this);
         this.physics.add.overlap(this.player.sprite, this.enemies, this.killPlayer, null, this);
 
-        //this.time.addEvent({ delay: 1000, callback: playEnemySound, callbackScope: this, loop: true });
+        this.time.addEvent({ delay: 1000, callback: playEnemySound, callbackScope: this, loop: true });
 
 
     }   
@@ -418,15 +418,11 @@ class Game extends Phaser.Scene {
     }
 }
 
-// TODO Get this working
-// Mothballed distance based enemy sound
-/*
 function playEnemySound() {
     // Play enemy sound when enemies are nearby
+    console.log("TEST");
     var distance = this.getDistanceToClosestEnemy();
-    if (distance < 600) {
-        this.enemySound.play('volume', {volume: 0.5});
-        console.log("test");
+    if (distance < 300 && this.player.alive) {
+        this.enemySound.play();
     }
 }
-*/
