@@ -190,7 +190,7 @@ class Game extends Phaser.Scene {
         this.children.bringToTop(this.distanceTraveled);
         this.children.bringToTop(this.pause);
 
-        if (this.player.alive) {
+        if (this.player.alive && this.gameData.menuOpen == false) {
             // Track player with camera
             if (this.player.sprite.y < 600) {
                 this.cameras.main.centerOn(this.player.sprite.x, this.player.sprite.y);
