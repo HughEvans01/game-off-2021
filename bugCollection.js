@@ -9,8 +9,8 @@ class BugCollection extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('sky', 'assets/sky.png');
-        this.load.spritesheet('bug', 'assets/bug.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.image('sky', 'assets/sprites/sky.png');
+        this.load.spritesheet('bug', 'assets/sprites/bug.png', { frameWidth: 64, frameHeight: 64 });
         this.load.json('bugs', 'bugs.json');
     }
 
