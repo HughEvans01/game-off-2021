@@ -55,8 +55,10 @@ class BugCollection extends Phaser.Scene {
             if (this.bugCollection[i]) {
                 pickup.setTintFill(bug.colour);
                 var text = this.add.text(x, y+30*this.gameOptions.UIScale, bug.name, { fontFamily: 'font2', fontSize: (12*this.gameOptions.UIScale)+'px' });
-                text.setOrigin(0.5,0.5);
+            } else {
+                var text = this.add.text(x, y+30*this.gameOptions.UIScale, '???', { fontFamily: 'font2', fontSize: (12*this.gameOptions.UIScale)+'px' });
             }
+            text.setOrigin(0.45,0.5);
 
             x = x + 200;
             if (x > 600) {
