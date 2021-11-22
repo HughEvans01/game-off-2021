@@ -152,8 +152,8 @@ class Game extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys();
         if (this.gameData.mobile) {
             this.input.addPointer(2); // For multi-touch
-            this.leftButton = this.add.image(800 - (144*this.gameOptions.UIScale), 600 - 49*this.gameOptions.UIScale, 'left');
-            this.upButton = this.add.image(48*this.gameOptions.UIScale, 600 - 49*this.gameOptions.UIScale, 'up');
+            this.leftButton = this.add.image(800 - (150*this.gameOptions.UIScale), 600 - 49*this.gameOptions.UIScale, 'left');
+            this.upButton = this.add.image(50*this.gameOptions.UIScale, 600 - 49*this.gameOptions.UIScale, 'up');
             this.rightButton = this.add.image(800 - 48*this.gameOptions.UIScale, 600 - 49*this.gameOptions.UIScale, 'right');
             this.leftButton.setScrollFactor(0).setScale(this.gameOptions.UIScale).setInteractive();
             this.upButton.setScrollFactor(0).setScale(this.gameOptions.UIScale).setInteractive();
