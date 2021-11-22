@@ -174,6 +174,22 @@ class Game extends Phaser.Scene {
     }   
 
     update(time, delta) {
+        // Generate level
+        this.totalPlatforms = this.platforms.children.entries.length;
+        this.latestPlatform = this.platforms.children.entries[this.totalPlatforms-1];
+        // TODO Logic for spawning platforms and entities is stupid, improve it
+        // Distance between player and edge of level generation
+        var a = this.latestPlatform.x;
+        var b = this.player.sprite.x;
+        if ((a - b) < 2000) {
+            this.spawnPlatform(this.latestPlatform.x + this.gameData.distanceBetweenPlatforms);
+            var entity = Phaser.Math.Between(0, 9);
+            if (entity < 6 ) {
+                this.spawnEnemy();
+            } else if (entity > 6){
+                this.spawnPickup();
+            }
+        }
         // TODO The below feels dumb, improve it?
         // Keep UI on top of game
         if (this.gameOptions.mobile) {
@@ -235,22 +251,6 @@ class Game extends Phaser.Scene {
             if (this.player.sprite.y > 600) {
                 this.fall.play();
                 this.killPlayer();
-            }
-        }
-        // Generate level
-        this.totalPlatforms = this.platforms.children.entries.length;
-        this.latestPlatform = this.platforms.children.entries[this.totalPlatforms-1];
-        // TODO Logic for spawning platforms and entities is stupid, improve it
-        // Distance between player and edge of level generation
-        var a = this.latestPlatform.x;
-        var b = this.player.sprite.x;
-        if ((a - b) < 2000) {
-            this.spawnPlatform(this.latestPlatform.x + this.gameData.distanceBetweenPlatforms);
-            var entity = Phaser.Math.Between(0, 9);
-            if (entity < 6 ) {
-                this.spawnEnemy();
-            } else if (entity > 6){
-                this.spawnPickup();
             }
         }
 
