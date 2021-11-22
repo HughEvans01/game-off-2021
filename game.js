@@ -176,7 +176,7 @@ class Game extends Phaser.Scene {
     update(time, delta) {
         // TODO The below feels dumb, improve it?
         // Keep UI on top of game
-        if (this.gameData.mobile) {
+        if (this.gameOptions.mobile) {
             this.children.bringToTop(this.leftButton);
             this.children.bringToTop(this.upButton);
             this.children.bringToTop(this.rightButton);
