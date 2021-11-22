@@ -76,11 +76,6 @@ class Game extends Phaser.Scene {
         this.spawnPlatform(400);
         this.spawnPlatform(this.latestPlatform.x+this.gameData.distanceBetweenPlatforms);
 
-        // Used for testing specfic bugs
-        this.pickup = this.pickups.create(this.latestPlatform.x, this.latestPlatform.y - 50, 'bug');
-        this.pickup.bugID = 7;
-        this.pickup.setTintFill(this.bugsJSON[this.pickup.bugID].colour);
-
         // Display distance travelled
         this.distanceTraveled = this.add.text((20*this.gameOptions.UIScale), 10*this.gameOptions.UIScale, '0', { fontFamily: 'font2', fontSize: (32*this.gameOptions.UIScale)+'px' });
         this.distanceTraveled.setScrollFactor(0);
