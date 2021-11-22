@@ -13,7 +13,8 @@ class Game extends Phaser.Scene {
             UIScale: 1.1,
             menuOpen: false,
             distanceBetweenPlatforms: 500,
-            enemiesVisible: true
+            enemiesVisible: true,
+            pickupsVisible: true
         };
         this.gameData.mobile = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
     }
@@ -76,9 +77,9 @@ class Game extends Phaser.Scene {
         this.spawnPlatform(this.latestPlatform.x+this.gameData.distanceBetweenPlatforms);
 
         // Used for testing specfic bugs
-        /*this.pickup = this.pickups.create(this.latestPlatform.x, this.latestPlatform.y - 50, 'bug');
-        this.pickup.bugID = 6;
-        this.pickup.setTintFill(this.bugsJSON[this.pickup.bugID].colour);*/
+        this.pickup = this.pickups.create(this.latestPlatform.x, this.latestPlatform.y - 50, 'bug');
+        this.pickup.bugID = 7;
+        this.pickup.setTintFill(this.bugsJSON[this.pickup.bugID].colour);
 
         // Display distance travelled
         this.distanceTraveled = this.add.text((20*this.gameOptions.UIScale), 10*this.gameOptions.UIScale, '0', { fontFamily: 'font2', fontSize: (32*this.gameOptions.UIScale)+'px' });
@@ -372,7 +373,7 @@ class Game extends Phaser.Scene {
         this.changedExisting = false;
         if (this.gameData.enemiesVisible == false) {
             this.latestEnemy.setTintFill(0x55AA00);
-            // Changes the colour of any bugs that spawned before bug was picked up
+            // Changes the colour of any enemies that spawned before bug was picked up
             if (this.changedExisting == false) {
                 for (var i=0; i<this.enemies.children.size; i++) {
                     this.enemies.children.entries[i].setTintFill(0x55AA00);
@@ -389,7 +390,18 @@ class Game extends Phaser.Scene {
         this.pickup = this.pickups.create(this.latestPlatform.x + offset, this.latestPlatform.y - 50, 'bug');
         this.pickup.anims.play('bug', true);
         this.pickup.bugID = Phaser.Math.Between(0, this.bugsJSON.length-1);
-        this.pickup.setTintFill(this.bugsJSON[this.pickup.bugID].colour);
+        // Implements the no more bugs bug
+        this.changedExistingBugs = false;
+        if (this.gameData.pickupsVisible == false) {
+            this.pickup.setTintFill(this.bugsJSON[this.pickup.bugID].colour);
+            // Changes the colour of any bugs that spawned before bug was picked up
+            if (this.changedExistingBugs == false) {
+                for (var i=0; i<this.pickups.children.size; i++) {
+                    this.pickups.children.entries[i].setTintFill(0x55AA43);
+                }
+                this.changedExistingBugs = true;
+            }
+        }
         this.tweens.add({
             targets: this.pickup,
             y: this.latestPlatform.y - 40,
