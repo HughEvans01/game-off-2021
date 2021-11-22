@@ -2,6 +2,8 @@
 
 For anyone unfortunate enough to look at this code, I apologise: it is pretty bad even by the standards of my other game dev projects.
 
+You can play my game [here](https://hughevans01.itch.io/bugging-me).
+
 ## MVP 06/11/2021
 
 * Implemented core game mechanics
