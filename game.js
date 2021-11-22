@@ -286,7 +286,13 @@ class Game extends Phaser.Scene {
                 window.localStorage.setItem('highScore', JSON.stringify(this.highScore));
                 this.newHighScore.setText("NEW HIGH SCORE");
             }
-            this.score = this.add.text(this.player.sprite.x,  this.player.sprite.y-50*this.gameOptions.UIScale, this.player.distanceTraveled + "m", { fontFamily: 'font2', fontSize: (16*this.gameOptions.UIScale)+'px' });
+            if (this.player.distanceTraveled > 0) {
+                this.score = this.add.text(this.player.sprite.x,  this.player.sprite.y-50*this.gameOptions.UIScale, this.player.distanceTraveled + "m", { fontFamily: 'font2', fontSize: (16*this.gameOptions.UIScale)+'px' });
+            
+            } else {
+                this.score = this.add.text(this.player.sprite.x,  this.player.sprite.y-50*this.gameOptions.UIScale, "0m", { fontFamily: 'font2', fontSize: (16*this.gameOptions.UIScale)+'px' });
+            
+            }
             this.score.setOrigin(0.5,0.5);
             var text = 'PLAY AGAIN';
             if (this.player.alive) {
