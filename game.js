@@ -386,7 +386,6 @@ class Game extends Phaser.Scene {
         // Implements the no more bugs bug
         this.changedExistingBugs = false;
         if (this.gameData.pickupsVisible == false) {
-            this.pickup.setTintFill(this.bugsJSON[this.pickup.bugID].colour);
             // Changes the colour of any bugs that spawned before bug was picked up
             if (this.changedExistingBugs == false) {
                 for (var i=0; i<this.pickups.children.size; i++) {
@@ -394,6 +393,8 @@ class Game extends Phaser.Scene {
                 }
                 this.changedExistingBugs = true;
             }
+        } else {
+            this.pickup.setTintFill(this.bugsJSON[this.pickup.bugID].colour);
         }
         this.tweens.add({
             targets: this.pickup,
