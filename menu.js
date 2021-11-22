@@ -31,8 +31,10 @@ class Menu extends Phaser.Scene {
         if (!this.gameOptions) {
             var gameOptions = {
                 UIScale: 1.1,
-                volume: 1
+                volume: 1,
+                mobile: false
             };
+            gameOptions.mobile = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
             this.gameOptions = gameOptions;
             window.localStorage.setItem('gameOptions', JSON.stringify(this.gameOptions));
         }

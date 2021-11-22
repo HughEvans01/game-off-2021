@@ -11,6 +11,8 @@ class Options extends Phaser.Scene {
     preload() {
         this.load.image('up', 'assets/sprites/up.png');
         this.load.image('down', 'assets/sprites/down.png');
+        this.load.image('unchecked', 'assets/sprites/unchecked.png');
+        this.load.image('checked', 'assets/sprites/checked.png');
     }
 
     create(data) {
@@ -78,6 +80,30 @@ class Options extends Phaser.Scene {
             }
 
         });
+
+        // Touch screen controls options
+        var mobileLabel = this.add.text(screenCenterX-40*this.gameOptions.UIScale, 400, 'TOUCH CONTROLS', { fontFamily: 'font2', fontSize: (32*this.gameOptions.UIScale)+'px' });
+        mobileLabel.setOrigin(0.5,0.5);
+
+        if (this.gameOptions.mobile) {
+            this.mobileCheckBox = this.add.image(screenCenterX+175*this.gameOptions.UIScale, 400, 'checked');
+        } else {
+            this.mobileCheckBox = this.add.image(screenCenterX+175*this.gameOptions.UIScale, 400, 'unchecked');
+        }
+        
+        this.mobileCheckBox.setInteractive();
+        this.mobileCheckBox.setScale(0.4*this.gameOptions.UIScale);
+        this.mobileCheckBox.on('pointerdown', () => {
+            if (this.gameOptions.mobile) {
+                this.gameOptions.mobile = false;
+                this.mobileCheckBox.setTexture('unchecked');
+            } else {
+                this.gameOptions.mobile = true;
+                this.mobileCheckBox.setTexture('checked');
+            }
+
+        });
+
 
     }
 

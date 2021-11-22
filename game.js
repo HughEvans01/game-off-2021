@@ -9,14 +9,12 @@ class Game extends Phaser.Scene {
         this.gameData = {
             minPlatformHeight: 400,
             maxPlatformHeight: 200,
-            mobile: false,
             UIScale: 1.1,
             menuOpen: false,
             distanceBetweenPlatforms: 500,
             enemiesVisible: true,
             pickupsVisible: true
         };
-        this.gameData.mobile = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
     }
 
     preload() {
@@ -146,7 +144,7 @@ class Game extends Phaser.Scene {
 
         //  Input Events
         this.cursors = this.input.keyboard.createCursorKeys();
-        if (this.gameData.mobile) {
+        if (this.gameOptions.mobile) {
             this.input.addPointer(2); // For multi-touch
             this.leftButton = this.add.image(800 - (150*this.gameOptions.UIScale), 600 - 49*this.gameOptions.UIScale, 'left');
             this.upButton = this.add.image(50*this.gameOptions.UIScale, 600 - 49*this.gameOptions.UIScale, 'up');
