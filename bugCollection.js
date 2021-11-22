@@ -42,26 +42,26 @@ class BugCollection extends Phaser.Scene {
 
         // Display all bugs in a grid with collected bugs in colour
         this.bugCollection = JSON.parse(window.localStorage.getItem('bugCollection'));
-        var x = 100;
-        var y = 50;
+        var x = 200;
+        var y = 100;
         var bug = null;
         for (var i=0; i<this.bugsJSON.length; i++) {
             bug = this.bugsJSON[i];
             var pickup = this.pickups.create(x, y, 'bug');
             pickup.anims.play('bug', true);
             pickup.setOrigin(0.5,0.5);
-            pickup.setScale(0.6*this.gameOptions.UIScale);
+            pickup.setScale(0.7*this.gameOptions.UIScale);
             pickup.setTintFill("0x959aa1");
             if (this.bugCollection[i]) {
                 pickup.setTintFill(bug.colour);
-                var text = this.add.text(x, y+30*this.gameOptions.UIScale, bug.name, { fontFamily: 'font2', fontSize: (10*this.gameOptions.UIScale)+'px' });
+                var text = this.add.text(x, y+30*this.gameOptions.UIScale, bug.name, { fontFamily: 'font2', fontSize: (12*this.gameOptions.UIScale)+'px' });
                 text.setOrigin(0.5,0.5);
             }
 
             x = x + 200;
-            if (x > 700) {
-                x = 100;
-                y = y + 80 + 20*this.gameOptions.UIScale;
+            if (x > 600) {
+                x = 200;
+                y = y + 120 + 20*this.gameOptions.UIScale;
             }
         }
     }
